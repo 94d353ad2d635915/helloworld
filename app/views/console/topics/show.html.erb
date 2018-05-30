@@ -26,12 +26,12 @@
     <% @comments.each do |comment| %>
       <tr>
         <td><%= comment.posttext.body if comment.posttext %></td>
-        <td><%= link_to 'Destroy', topic_comment_path(@topic, comment), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', console_topic_comment_path(@topic, comment), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<%= render 'comments/form', comment: @topic.comments.build %>
+<%= render 'console/comments/form', comment: @topic.comments.build %>
 
-<%= link_to 'Edit', edit_topic_path(@topic) %> |
-<%= link_to 'Back', topics_path %>
+<%= link_to 'Edit', edit_console_topic_path(@topic) %> |
+<%= link_to 'Back', console_topics_path %>

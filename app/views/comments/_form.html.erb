@@ -1,0 +1,13 @@
+<%= form_for [@topic, comment] do |form| %>
+  <div class="field">
+    <%= form.label :posttext %>
+    <%= fields_for :posttext, comment.posttext do |posttext| %>
+      <%=  posttext.text_area :body %>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+

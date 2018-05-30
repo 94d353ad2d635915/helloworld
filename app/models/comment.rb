@@ -1,7 +1,6 @@
-class Topic < ApplicationRecord
+class Comment < ApplicationRecord
   belongs_to :user
+  belongs_to :topic
   belongs_to :posttext, dependent: :destroy
-  has_many :comments, dependent: :destroy
   accepts_nested_attributes_for :posttext
-  validates :title, presence: true
 end

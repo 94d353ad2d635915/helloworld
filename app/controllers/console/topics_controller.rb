@@ -1,4 +1,4 @@
-class TopicsController < ApplicationController
+class Console::TopicsController < Console::ApplicationController
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
 
   # GET /topics
@@ -32,8 +32,8 @@ class TopicsController < ApplicationController
     @topic.posttext = posttext
     respond_to do |format|
       if @topic.save
-        format.html { redirect_to @topic, notice: 'Topic was successfully created.' }
-        format.json { render :show, status: :created, location: @topic }
+        format.html { redirect_to console_topic_path(@topic), notice: 'Topic was successfully created.' }
+        format.json { render :show, status: :created, location: console_topic_path(@topic) }
       else
         format.html { render :new }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
@@ -46,8 +46,8 @@ class TopicsController < ApplicationController
   def update
     respond_to do |format|
       if @topic.update(topic_params) & @topic.posttext.update(posttext_params)
-        format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
-        format.json { render :show, status: :ok, location: @topic }
+        format.html { redirect_to console_topic_path(@topic), notice: 'Topic was successfully updated.' }
+        format.json { render :show, status: :ok, location: console_topic_path(@topic) }
       else
         format.html { render :edit }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
@@ -60,7 +60,7 @@ class TopicsController < ApplicationController
   def destroy
     @topic.destroy
     respond_to do |format|
-      format.html { redirect_to topics_url, notice: 'Topic was successfully destroyed.' }
+      format.html { redirect_to console_topics_url, notice: 'Topic was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

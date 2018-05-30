@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Posttext:</strong>
+  <%= @comment.posttext.body if @comment.posttext %>
+</p>
+
+<%= link_to 'Edit', edit_console_comment_path(@comment) %> |
+<%= link_to 'Back', console_comments_path %>
