@@ -15,11 +15,18 @@
     <%= form.label :title %>
     <%= form.text_field :title %>
   </div>
-
+<!-- 
   <div class="field">
     <%= form.label :body %>
     <%= form.text_area :body %>
+  </div> -->
+
+  <div class="field">
+    <%= fields_for :posttext, topic.posttext do |posttext| %>
+      <%= posttext.text_area :body %>
+    <% end %>
   </div>
+
 
   <div class="actions">
     <%= form.submit %>

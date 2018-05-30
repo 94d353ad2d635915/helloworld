@@ -10,14 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_29_064301) do
+ActiveRecord::Schema.define(version: 2018_05_29_223523) do
+
+  create_table "posttexts", force: :cascade do |t|
+    t.text "body"
+  end
 
   create_table "topics", force: :cascade do |t|
     t.string "title"
-    t.text "body"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "posttext_id"
+    t.index ["posttext_id"], name: "index_topics_on_posttext_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 

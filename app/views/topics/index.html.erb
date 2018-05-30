@@ -16,7 +16,7 @@
     <% @topics.each do |topic| %>
       <tr>
         <td><%= topic.title %></td>
-        <td><%= topic.body %></td>
+        <td><%= topic.posttext.body if topic.posttext%></td>
         <td><%= topic.user %></td>
         <td><%= link_to 'Show', topic %></td>
         <td><%= link_to 'Edit', edit_topic_path(topic) %></td>

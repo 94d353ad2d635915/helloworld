@@ -4,7 +4,7 @@ class TopicsController < ApplicationController
   # GET /topics
   # GET /topics.json
   def index
-    @topics = Topic.all
+    @topics = Topic.all.includes(:user, :posttext)
   end
 
   # GET /topics/1
@@ -14,7 +14,7 @@ class TopicsController < ApplicationController
 
   # GET /topics/new
   def new
-    @topic = current_user.topics.build#Topic.new
+    @topic = Topic.new
   end
 
   # GET /topics/1/edit
@@ -25,7 +25,10 @@ class TopicsController < ApplicationController
   # POST /topics.json
   def create
     @topic = current_user.topics.build(topic_params)#Topic.new(topic_params)
-
+    puts posttext_params
+    posttext = Posttext.new(posttext_params)
+    posttext.save
+    @topic.posttext = posttext
     respond_to do |format|
       if @topic.save
         format.html { redirect_to @topic, notice: 'Topic was successfully created.' }
@@ -41,7 +44,7 @@ class TopicsController < ApplicationController
   # PATCH/PUT /topics/1.json
   def update
     respond_to do |format|
-      if @topic.update(topic_params)
+      if @topic.update(topic_params) & @topic.posttext.update(posttext_params)
         format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
         format.json { render :show, status: :ok, location: @topic }
       else
@@ -69,6 +72,9 @@ class TopicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topic_params
-      params.require(:topic).permit(:title, :body)
+      params.require(:topic).permit(:title)
+    end
+    def posttext_params
+      params.require(:posttext).permit(:body)
     end
 end
