@@ -31,7 +31,7 @@
     <% end %>
   </tbody>
 </table>
-<%= render 'comments/form', comment: @topic.comments.build %>
+<%= render 'comments/form', comment: @comment %>
 
 <%= link_to 'Edit', edit_topic_path(@topic) %> |
 <%= link_to 'Back', topics_path %>

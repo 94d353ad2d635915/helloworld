@@ -10,7 +10,8 @@ class Console::TopicsController < Console::ApplicationController
   # GET /topics/1
   # GET /topics/1.json
   def show
-    @comments = @topic.comments
+    @comments = @topic.comments.includes(:posttext)
+    @comment = @topic.comments.build
   end
 
   # GET /topics/new

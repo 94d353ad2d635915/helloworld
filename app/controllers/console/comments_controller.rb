@@ -20,16 +20,17 @@ class Console::CommentsController < Console::ApplicationController
   def create_from_topic
     posttext = Posttext.new(posttext_params)
     posttext.save
-    comment = @topic.comments.build
-    comment.user = current_user
-    comment.posttext = posttext
+    @comment = @topic.comments.build
+    @comment.user = current_user
+    @comment.posttext = posttext
 
     respond_to do |format|
-      if comment.save
+      if @comment.save
         format.html { redirect_to console_topic_path(@topic), notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: console_topic_path(@topic) }
       else
-        format.html { render :new }
+        @comments = @topic.comments.includes(:posttext)
+        format.html { render 'console/topics/show'  }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
       end
     end

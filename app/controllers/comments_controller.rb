@@ -5,16 +5,17 @@ class CommentsController < ApplicationController
   def create
     posttext = Posttext.new(posttext_params)
     posttext.save
-    comment = @topic.comments.build
-    comment.user = current_user
-    comment.posttext = posttext
+    @comment = @topic.comments.build
+    @comment.user = current_user
+    @comment.posttext = posttext
 
     respond_to do |format|
-      if comment.save
+      if @comment.save
         format.html { redirect_to @topic, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @topic }
       else
-        format.html { render :new }
+        @comments = @topic.comments.includes(:posttext)
+        format.html { render 'topics/show'  }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
       end
     end
