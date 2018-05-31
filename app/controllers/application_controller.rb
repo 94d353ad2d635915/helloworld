@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
 
   private
     def update_posttext(object, params)
+      return false unless object.valid?
       if object.posttext.nil?
         if params[:body].presence
           object.create_posttext(params)
@@ -15,8 +16,9 @@ class ApplicationController < ActionController::Base
       end
       return true
     end
-
+    
     def update_avatar(object, params)
+      return false unless object.valid?
       if params[:url].presence
         if object.avatar.nil?
           object.create_avatar(params)
