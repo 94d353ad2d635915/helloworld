@@ -18,11 +18,9 @@ class Console::CommentsController < Console::ApplicationController
   end
 
   def create_from_topic
-    posttext = Posttext.new(posttext_params)
-    posttext.save
     @comment = @topic.comments.build
     @comment.user = current_user
-    @comment.posttext = posttext
+    update_posttext(@comment, posttext_params)
 
     respond_to do |format|
       if @comment.save
@@ -39,9 +37,14 @@ class Console::CommentsController < Console::ApplicationController
   # PATCH/PUT /comments/1.json
   def update
     respond_to do |format|
-      if @comment.posttext.update(posttext_params)
-        format.html { redirect_to console_comment_path(@comment), notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: console_comment_path(@comment) }
+      if update_posttext(@comment, posttext_params)
+        if @comment.frozen?
+          format.html { redirect_to console_comments_path, notice: 'Comment was successfully destroyed.' }
+          format.json { head :no_content }
+        else 
+          format.html { redirect_to console_comment_path(@comment), notice: 'Comment was successfully updated.' }
+          format.json { render :show, status: :ok, location: console_comment_path(@comment) }
+        end
       else
         format.html { render :edit }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
