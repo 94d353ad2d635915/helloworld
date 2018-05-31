@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'topics#index'
+  resources :nodes
   resources :topics do 
     resources :comments, only: [:create, :destroy]
   end
@@ -7,6 +8,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :console do
+    resources :nodes
+    resources :avatars, only: [:index, :destroy]
     resources :comments, except: [:new, :create]
     resources :topics do 
       # resources :comments

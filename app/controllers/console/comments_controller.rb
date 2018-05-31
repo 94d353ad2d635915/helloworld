@@ -1,6 +1,9 @@
 class Console::CommentsController < Console::ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy, :destroy_from_topic]
   before_action :set_topic, only: [:create_from_topic, :destroy_from_topic]
+  after_action only: [:update, :create_from_topic] do 
+    update_posttext(@comment, posttext_params)
+  end
 
   # GET /comments
   # GET /comments.json
@@ -16,39 +19,12 @@ class Console::CommentsController < Console::ApplicationController
   # GET /comments/1/edit
   def edit
   end
-
-  def create_from_topic
-    @comment = @topic.comments.build
-    @comment.user = current_user
-    update_posttext(@comment, posttext_params)
-
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to console_topic_path(@topic), notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: console_topic_path(@topic) }
-      else
-        @comments = @topic.comments.includes(:posttext)
-        format.html { render 'console/topics/show'  }
-        format.json { render json: @topic.errors, status: :unprocessable_entity }
-      end
-    end
-  end
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
     respond_to do |format|
-      if update_posttext(@comment, posttext_params)
-        if @comment.frozen?
-          format.html { redirect_to console_comments_path, notice: 'Comment was successfully destroyed.' }
-          format.json { head :no_content }
-        else 
-          format.html { redirect_to console_comment_path(@comment), notice: 'Comment was successfully updated.' }
-          format.json { render :show, status: :ok, location: console_comment_path(@comment) }
-        end
-      else
-        format.html { render :edit }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to console_comment_path(@comment), notice: 'Comment was successfully updated.' }
+      format.json { render :show, status: :ok, location: console_comment_path(@comment) }
     end
   end
 
@@ -59,6 +35,21 @@ class Console::CommentsController < Console::ApplicationController
     respond_to do |format|
       format.html { redirect_to console_comments_path, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def create_from_topic
+    @comment = @topic.comments.build
+    @comment.user = current_user
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to console_topic_path(@topic), notice: 'Comment was successfully created.' }
+        format.json { render :show, status: :created, location: console_topic_path(@topic) }
+      else
+        @comments = @topic.comments.includes(:posttext)
+        format.html { render 'console/topics/show'  }
+        format.json { render json: @topic.errors, status: :unprocessable_entity }
+      end
     end
   end
 

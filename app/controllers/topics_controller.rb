@@ -1,5 +1,8 @@
 class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
+  after_action only: [:create, :update] do 
+    update_posttext(@topic, posttext_params)
+  end
 
   # GET /topics
   # GET /topics.json
@@ -27,7 +30,6 @@ class TopicsController < ApplicationController
   # POST /topics.json
   def create
     @topic = current_user.topics.build(topic_params)
-    update_posttext(@topic, posttext_params)
     respond_to do |format|
       if @topic.save
         format.html { redirect_to @topic, notice: 'Topic was successfully created.' }
@@ -42,7 +44,6 @@ class TopicsController < ApplicationController
   # PATCH/PUT /topics/1
   # PATCH/PUT /topics/1.json
   def update
-    update_posttext(@topic, posttext_params)
     respond_to do |format|
       if @topic.update(topic_params)
         format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }

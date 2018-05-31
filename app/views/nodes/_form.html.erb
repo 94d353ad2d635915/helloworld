@@ -1,0 +1,58 @@
+<%= form_with(model: node, local: true) do |form| %>
+  <% if node.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(node.errors.count, "error") %> prohibited this node from being saved:</h2>
+
+      <ul>
+      <% node.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :node_id %>
+    <%= #form.text_field :node_id
+      form.select :node_id, Node.all.collect {|node| [node.name, node.id]}, {include_blank: true}
+     %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :slug %>
+    <%= form.text_field :slug %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tagline %>
+    <%= form.text_field :tagline %>
+  </div>
+
+  <div class="field">
+    <%= form.label :avatar %>
+    <%= fields_for :avatar, node.avatar do |avatar| %>
+      <%= avatar.text_field :url %>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :posttext %>
+    <%= fields_for :posttext, node.posttext do |posttext| %>
+      <%= posttext.text_area :body %>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

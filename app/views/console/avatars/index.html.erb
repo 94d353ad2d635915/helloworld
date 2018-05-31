@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h1>avatars</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>image</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @avatars.each do |avatar| %>
+      <tr>
+        <td><%= avatar.id %></td>
+        <td><%= image_tag avatar.url, size: 48 %></td>
+        <td><%= link_to 'Destroy', console_avatar_path(avatar), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

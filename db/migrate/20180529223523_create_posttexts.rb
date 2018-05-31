@@ -10,7 +10,7 @@ class CreatePosttexts < ActiveRecord::Migration[5.2]
 
   def down
     drop_table :posttexts
-    remove_reference :topics, :posttext
+    remove_reference :topics, :posttext, foreign_key: true
     add_column :topics, :body, :string
   end
 end

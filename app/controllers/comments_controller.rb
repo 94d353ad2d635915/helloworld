@@ -1,11 +1,13 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:destroy]
   before_action :set_topic, only: [:create, :destroy]
+  after_action only: [:create] do 
+    update_posttext(@comment, posttext_params)
+  end
 
   def create
     @comment = @topic.comments.build
     @comment.user = current_user
-    update_posttext(@comment, posttext_params)
 
     respond_to do |format|
       if @comment.save

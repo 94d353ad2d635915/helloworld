@@ -1,5 +1,4 @@
 class Posttext < ApplicationRecord
-  has_one :topic
-  has_one :comment, dependent: :destroy
+  belongs_to :textable, polymorphic: true
   validates :body, presence: true
 end

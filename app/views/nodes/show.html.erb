@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Node:</strong>
+  <%= @node.node_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @node.name %>
+</p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @node.slug %>
+</p>
+
+<p>
+  <strong>Tagline:</strong>
+  <%= @node.tagline %>
+</p>
+
+<p>
+  <strong>Avatar:</strong>
+  <%= image_tag(@node.avatar.url, size:48) if @node.avatar %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @node.user %>
+</p>
+
+<p>
+  <strong>Posttext:</strong>
+  <%= @node.posttext.body if @node.posttext %>
+</p>
+
+<%= link_to 'Edit', edit_node_path(@node) %> |
+<%= link_to 'Back', nodes_path %>

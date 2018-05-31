@@ -10,21 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_30_015029) do
+ActiveRecord::Schema.define(version: 2018_05_31_092428) do
+
+  create_table "avatars", force: :cascade do |t|
+    t.string "url"
+    t.string "avatarable_type"
+    t.integer "avatarable_id"
+    t.index ["avatarable_type", "avatarable_id"], name: "index_avatars_on_avatarable_type_and_avatarable_id"
+  end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "posttext_id"
     t.integer "user_id"
     t.integer "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["posttext_id"], name: "index_comments_on_posttext_id"
     t.index ["topic_id"], name: "index_comments_on_topic_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "nodes", force: :cascade do |t|
+    t.integer "node_id"
+    t.string "name"
+    t.string "slug"
+    t.string "tagline"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["node_id"], name: "index_nodes_on_node_id"
+    t.index ["user_id"], name: "index_nodes_on_user_id"
+  end
+
   create_table "posttexts", force: :cascade do |t|
     t.text "body"
+    t.string "textable_type"
+    t.integer "textable_id"
+    t.index ["textable_type", "textable_id"], name: "index_posttexts_on_textable_type_and_textable_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -32,8 +52,6 @@ ActiveRecord::Schema.define(version: 2018_05_30_015029) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "posttext_id"
-    t.index ["posttext_id"], name: "index_topics_on_posttext_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
