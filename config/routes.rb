@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root 'topics#index'
-  resources :nodes
+  resources :nodes, only: [:show]
   resources :topics do 
     resources :comments, only: [:create, :destroy]
   end

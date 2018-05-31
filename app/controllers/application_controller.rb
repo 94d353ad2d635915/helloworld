@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
           object.avatar.update(params)
         end
       else
-        object.avatar.destroy unless avatar.nil?
+        object.avatar.destroy unless object.avatar.nil?
       end
       return true
     end

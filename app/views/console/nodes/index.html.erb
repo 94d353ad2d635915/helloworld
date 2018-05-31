@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>id</th>
       <th>Node</th>
       <th>Name</th>
       <th>Slug</th>
@@ -19,13 +20,14 @@
   <tbody>
     <% @nodes.each do |node| %>
       <tr>
-        <td><%= node.node %></td>
+        <td><%= node.id %></td>
+        <td><%= node.node_id %></td>
         <td><%= node.name %></td>
         <td><%= node.slug %></td>
         <td><%= node.tagline %></td>
-        <td><%= node.avatar %></td>
+        <td><%= image_tag(node.avatar.url, size: 48) if node.avatar %></td>
         <td><%= node.user %></td>
-        <td><%= node.posttext %></td>
+        <td><%= node.posttext.body if node.posttext %></td>
         <td><%= link_to 'Show', console_node_path(node) %></td>
         <td><%= link_to 'Edit', edit_console_node_path(node) %></td>
         <td><%= link_to 'Destroy', console_node_path(node), method: :delete, data: { confirm: 'Are you sure?' } %></td>
