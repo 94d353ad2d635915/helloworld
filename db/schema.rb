@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_31_092428) do
+ActiveRecord::Schema.define(version: 2018_05_31_111303) do
 
   create_table "avatars", force: :cascade do |t|
     t.string "url"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 2018_05_31_092428) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "node_id"
+    t.index ["node_id"], name: "index_topics_on_node_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 

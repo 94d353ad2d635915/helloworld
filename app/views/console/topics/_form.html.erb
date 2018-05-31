@@ -17,6 +17,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :node_id %>
+    <%= form.select :node_id, Node.all.collect{|node| [node.name, node.id]}, {include_blank: true} %>
+  </div>
+
+  <div class="field">
     <%= fields_for :posttext, topic.posttext do |posttext| %>
       <%= posttext.text_area :body %>
     <% end %>

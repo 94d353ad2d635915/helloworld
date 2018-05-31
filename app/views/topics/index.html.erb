@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Node</th>
       <th>Body</th>
       <th>User</th>
       <th colspan="3"></th>
@@ -16,6 +17,7 @@
     <% @topics.each do |topic| %>
       <tr>
         <td><%= topic.title %></td>
+        <td><%= topic.node.name if topic.node %></td>
         <td><%= topic.posttext.body if topic.posttext%></td>
         <td><%= topic.user %></td>
         <td><%= link_to 'Show', topic %></td>

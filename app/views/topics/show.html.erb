@@ -4,6 +4,10 @@
   <strong>Title:</strong>
   <%= @topic.title %>
 </p>
+<p>
+  <strong>Node:</strong>
+  <%= @topic.node.name if @topic.node %>
+</p>
 
 <p>
   <strong>Body:</strong>
