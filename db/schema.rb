@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_31_111303) do
+ActiveRecord::Schema.define(version: 2018_06_01_040803) do
 
   create_table "avatars", force: :cascade do |t|
     t.string "url"
@@ -38,6 +38,20 @@ ActiveRecord::Schema.define(version: 2018_05_31_111303) do
     t.datetime "updated_at", null: false
     t.index ["node_id"], name: "index_nodes_on_node_id"
     t.index ["user_id"], name: "index_nodes_on_user_id"
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.integer "priority"
+    t.string "name"
+    t.string "alias"
+    t.string "verb"
+    t.string "path"
+    t.string "controller"
+    t.string "action"
+    t.string "params_permit"
+    t.string "params_range"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "posttexts", force: :cascade do |t|

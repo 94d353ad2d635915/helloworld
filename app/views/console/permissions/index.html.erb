@@ -1,0 +1,46 @@
+<div class='card'>
+  <div class='card-body'>
+    <table class='table table-sm'>
+      <thead class='table-secondary'>
+        <tr>
+          <th>id</th>
+          <th>Priority</th>
+          <th>HTTP Verb</th>
+          <th>Controller</th>
+          <th>Action</th>
+          <th>Helper: Path / Url</th>
+          <th>
+            PATH
+            <%= link_to 'update', console_permissions_path, method: :patch, data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'rails', console_permissions_path(rails: '') %>
+            <%= link_to 'all', console_permissions_path(all: '') %>
+            <%= link_to 'raw', console_permissions_path(raw: '') %>
+          </th>
+        </tr>
+        <tr>
+          <th>√</th>
+          <th>√</th>
+          <th class='filter' id='filter-d'>HTTP Verb</th>
+          <th class='filter' id='filter-f'>Controller</th>
+          <th class='filter' id='filter-g'>Action</th>
+          <th class='filter' id='filter-c'>Helper: Path / Url</th>
+          <th class='filter' id='filter-e'></th>
+        </tr>
+      </thead>
+      <tbody class='fliter-list'>
+        <% to_link = ['properties', 'permissions', 'index', 'new', 'routes'] %>
+        <% @permissions.each do |permission| %>
+        <tr>
+          <td><%= permission[:id] %></td>
+          <td><%= permission[:priority] %></td>
+          <td class='filter' id='filter-d'><%= permission[:verb] %></td>
+          <td class='filter' id='filter-f'><%= permission[:controller] %></td>
+          <td class='filter' id='filter-g'><%= permission[:action] %></td>
+          <td class='filter' id='filter-c'><%= permission[:alias] %></td>
+          <td class='filter' id='filter-e'><%= to_link.include?(permission[:action]) && !permission[:alias].nil? ? link_to(permission[:path], permission[:alias].to_sym) : permission[:path] %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
