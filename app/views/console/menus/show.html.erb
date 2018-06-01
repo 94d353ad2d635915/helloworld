@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Menu:</strong>
+  <%= @menu.menu %>
+</p>
+
+<p>
+  <strong>Priority:</strong>
+  <%= @menu.priority %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @menu.name %>
+</p>
+
+<p>
+  <strong>Permission:</strong>
+  <%= @menu.permission %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @menu.description %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @menu.user %>
+</p>
+
+<%= link_to 'Edit', edit_console_menu_path(@menu) %> |
+<%= link_to 'Back', console_menus_path %>

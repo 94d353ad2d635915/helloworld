@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Menus</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Menu</th>
+      <th>Priority</th>
+      <th>Name</th>
+      <th>Permission</th>
+      <th>Description</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @menus.each do |menu| %>
+      <tr>
+        <td><%= menu.id %></td>
+        <td><%= menu.menu.name if menu.menu_id %></td>
+        <td><%= menu.priority %></td>
+        <td><%= menu.name %></td>
+        <td><%= link_to(menu.permission.path, menu.permission.alias.to_sym) if menu.permission_id %></td>
+        <td><%= menu.description %></td>
+        <td><%= menu.user %></td>
+        <td><%= link_to 'Show', console_menu_path(menu) %></td>
+        <td><%= link_to 'Edit', edit_console_menu_path(menu) %></td>
+        <td><%= link_to 'Destroy', console_menu_path(menu), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Menu', new_console_menu_path %>

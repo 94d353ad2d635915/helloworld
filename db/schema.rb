@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_01_040803) do
+ActiveRecord::Schema.define(version: 2018_06_01_071913) do
 
   create_table "avatars", force: :cascade do |t|
     t.string "url"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(version: 2018_06_01_040803) do
     t.datetime "updated_at", null: false
     t.index ["topic_id"], name: "index_comments_on_topic_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "menus", force: :cascade do |t|
+    t.integer "menu_id"
+    t.integer "priority", default: 0
+    t.string "name"
+    t.integer "permission_id"
+    t.string "description"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_menus_on_menu_id"
+    t.index ["permission_id"], name: "index_menus_on_permission_id"
+    t.index ["user_id"], name: "index_menus_on_user_id"
   end
 
   create_table "nodes", force: :cascade do |t|

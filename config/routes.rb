@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :console do
+    resources :menus
     get 'permissions', to: 'permissions#index'
     patch 'permissions', to: 'permissions#update'
     resources :nodes

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  menu: one
+  name: MyString
+  permission: one
+  description: MyString
+  user: one
+
+two:
+  menu: two
+  name: MyString
+  permission: two
+  description: MyString
+  user: two
