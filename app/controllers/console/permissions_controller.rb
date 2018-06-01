@@ -55,9 +55,9 @@ class Console::PermissionsController < Console::ApplicationController
             verb: permission[:verb], 
             controller: permission[:controller],
             action: permission[:action], # 变化后更改
-          } => {
             alias: permission[:alias], # 变化后更改
             path: permission[:path], 
+          } => {
             priority: i+=1,
             name: permission[:name],
           }
@@ -138,9 +138,9 @@ class Console::PermissionsController < Console::ApplicationController
             verb: route.verb, 
             controller: route.defaults[:controller],
             action: route.defaults[:action], 
-          } => { 
             alias: route.name, 
             path: route.path.spec.to_s.gsub('(.:format)', ''), 
+          } => { 
             priority: i+=1,
             name: "#{route.defaults[:controller]}_#{route.defaults[:action]}(#{route.verb}:#{route.name})",
           }
