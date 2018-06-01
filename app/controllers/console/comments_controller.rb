@@ -8,7 +8,7 @@ class Console::CommentsController < Console::ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    @comments = Comment.all.includes(:posttext)
   end
 
   # GET /comments/1
