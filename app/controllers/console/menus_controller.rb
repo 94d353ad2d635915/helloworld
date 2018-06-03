@@ -4,7 +4,9 @@ class Console::MenusController < Console::ApplicationController
   # GET /menus
   # GET /menus.json
   def index
-    @menus = Menu.all.includes(:menu, :user, :permission)
+    # @menus = Menu.all.includes(:menu, :user, :permission)
+    @menus = get_menus
+    # @menus = get_menus('Console', current_user)
   end
 
   # GET /menus/1

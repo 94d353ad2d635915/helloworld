@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :nodes
   has_many :menus
-  has_many :roles
+  # has_many :roles
   # has_and_belongs_to_many :users, join_table: :assign_roles_users
   # extra attributes
   has_many :assign_roles_users, dependent: :destroy
