@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :console do
+    patch 'roles/:id/permissions', to: 'roles#update_role_permissions', as: 'role_permissions'
+    patch 'roles/:id/users', to: 'roles#update_role_users', as: 'role_users'
+    resources :roles
     resources :menus
     get 'permissions', to: 'permissions#index'
     patch 'permissions', to: 'permissions#update'

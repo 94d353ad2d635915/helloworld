@@ -49,7 +49,8 @@ class Console::PermissionsController < Console::ApplicationController
     def updates
       i = 0
       permissions_db = {}
-      Permission.all.each do |permission|
+      @permissions = Permission.all
+      @permissions.each do |permission|
         result = {
           { # 3点唯一
             verb: permission[:verb], 
@@ -58,7 +59,7 @@ class Console::PermissionsController < Console::ApplicationController
             alias: permission[:alias], # 变化后更改
             path: permission[:path], 
           } => {
-            priority: i+=1,
+            priority: permission[:priority],
             name: permission[:name],
           }
         }
@@ -77,6 +78,21 @@ class Console::PermissionsController < Console::ApplicationController
           if routes_map[route] != permissions_db[route]
             # priority is not same
             Permission.where(route).update(priority)
+            # @permissions.select do |permission|
+            #   result = {
+            #     verb: permission[:verb], 
+            #     controller: permission[:controller],
+            #     action: permission[:action], # 变化后更改
+            #     alias: permission[:alias], # 变化后更改
+            #     path: permission[:path], 
+            #   }
+            #   puts result 
+            #   puts route
+            #   puts priority
+            #   puts result.eql?(route)
+            #   return false
+            # end#.first.update(priority)
+
             permissions_update +=1
           end
           permissions_db_keys.delete(route)
@@ -87,20 +103,32 @@ class Console::PermissionsController < Console::ApplicationController
       end
       permissions_db_keys.each do |route|
         Permission.find_by(route).destroy
+        # @permissions.select do |permission|
+        #   result = {
+        #     verb: permission[:verb], 
+        #     controller: permission[:controller],
+        #     action: permission[:action], # 变化后更改
+        #     alias: permission[:alias], # 变化后更改
+        #     path: permission[:path], 
+        #   }
+        #   puts result.eql?(route)
+        #   return result.eql?(route)
+        # end.first.destroy
+
         permissions_delete +=1
       end
-
+      puts notice = "
+        #{permissions_update} permissions have been updated.
+        #{permissions_create} permissions have been created.
+        #{permissions_delete} permissions have been deleted.
+      "
       respond_to do |format|
-        if permissions_update == 0 && permissions_create == 0
+        if permissions_update == 0 && permissions_create == 0 && permissions_delete == 0
           format.html { redirect_to console_permissions_path, notice: 'No permission needs change.' }
         else
           format.html { 
             redirect_to console_permissions_path, 
-            notice: "
-              #{permissions_update} permissions have been updated.
-              #{permissions_create} permissions have been created.
-              #{permissions_delete} permissions have been deleted.
-            "
+            notice: notice
           }
         end
       end

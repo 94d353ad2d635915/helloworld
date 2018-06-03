@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @roles.select{|o| o.id == @role.role_id }.first.name if @role.role_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @role.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @role.description %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @role.user %>
+</p>
+
+<%= link_to 'Edit', edit_console_role_path(@role) %> |
+<%= link_to 'Back', console_roles_path %>
+
+<%= form_for([:console, @role], url: console_role_permissions_path(@role)) do |form| %>
+  <% if @role.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@role.errors.count, "error") %> prohibited this role from being saved:</h2>
+
+      <ul>
+      <% @role.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :permissions %>
+    <%= form.collection_check_boxes :permission_ids, @permissions, :id, :name, {include_hidden: false} do |b|
+        b.label { b.check_box + b.text }
+      end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'update permissions' %>
+  </div>
+<% end %>
+
+<%= form_for([:console, @role], url: console_role_users_path(@role)) do |form| %>
+  <% if @role.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@role.errors.count, "error") %> prohibited this role from being saved:</h2>
+
+      <ul>
+      <% @role.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :users %>
+    <%= form.collection_check_boxes :user_ids, User.all, :id, :email, {include_hidden: false} do |b|
+        b.label { b.check_box + b.text }
+      end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'update users' %>
+  </div>
+<% end %>

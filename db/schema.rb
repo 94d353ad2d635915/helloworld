@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_01_071913) do
+ActiveRecord::Schema.define(version: 2018_06_01_103913) do
+
+  create_table "assign_permissions_roles", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "permission_id"
+    t.integer "assignee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignee_id"], name: "index_assign_permissions_roles_on_assignee_id"
+    t.index ["permission_id"], name: "index_assign_permissions_roles_on_permission_id"
+    t.index ["role_id"], name: "index_assign_permissions_roles_on_role_id"
+  end
+
+  create_table "assign_roles_users", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "user_id"
+    t.integer "assignee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignee_id"], name: "index_assign_roles_users_on_assignee_id"
+    t.index ["role_id"], name: "index_assign_roles_users_on_role_id"
+    t.index ["user_id"], name: "index_assign_roles_users_on_user_id"
+  end
 
   create_table "avatars", force: :cascade do |t|
     t.string "url"
@@ -73,6 +95,17 @@ ActiveRecord::Schema.define(version: 2018_06_01_071913) do
     t.string "textable_type"
     t.integer "textable_id"
     t.index ["textable_type", "textable_id"], name: "index_posttexts_on_textable_type_and_textable_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.integer "role_id"
+    t.string "name"
+    t.string "description"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_roles_on_role_id"
+    t.index ["user_id"], name: "index_roles_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|

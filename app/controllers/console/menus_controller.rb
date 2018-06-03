@@ -15,24 +15,24 @@ class Console::MenusController < Console::ApplicationController
   # GET /menus/new
   def new
     @menu = Menu.new
-    the_data
+    menus_permissions
   end
 
   # GET /menus/1/edit
   def edit
-    the_data
+    menus_permissions
   end
 
   # POST /menus
   # POST /menus.json
   def create
     @menu = current_user.menus.build(menu_params)
-
     respond_to do |format|
       if @menu.save
         format.html { redirect_to console_menu_path(@menu), notice: 'Menu was successfully created.' }
         format.json { render :show, status: :created, location: console_menu_path(@menu) }
       else
+        menus_permissions
         format.html { render :new }
         format.json { render json: @menu.errors, status: :unprocessable_entity }
       end
@@ -47,6 +47,7 @@ class Console::MenusController < Console::ApplicationController
         format.html { redirect_to console_menu_path(@menu), notice: 'Menu was successfully updated.' }
         format.json { render :show, status: :ok, location: console_menu_path(@menu) }
       else
+        menus_permissions
         format.html { render :edit }
         format.json { render json: @menu.errors, status: :unprocessable_entity }
       end
@@ -74,7 +75,7 @@ class Console::MenusController < Console::ApplicationController
       params.require(:menu).permit(:menu_id, :priority, :name, :permission_id, :description)
     end
 
-    def the_data
+    def menus_permissions
       @menus = Menu.all
       @permissions = Permission.all
         .where(verb: 'GET')
