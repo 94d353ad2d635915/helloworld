@@ -1,0 +1,16 @@
+%table.table
+  %thead
+    %tr
+      %th Posttext
+      %th User
+      %th
+  %tbody
+    - @comments.each do |comment|
+      %tr
+        %td= comment.posttext.body if comment.posttext
+        %td= comment.user.email
+        %td
+          = link_to 'Show', console_comment_path(comment)
+          = link_to 'Edit', edit_console_comment_path(comment)
+          = link_to 'Destroy', console_comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' }
+%br/

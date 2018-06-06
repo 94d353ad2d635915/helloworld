@@ -1,7 +1,4 @@
 <div class='card'>
-  <div class="card-header">
-    <%= notice %>
-  </div>
   <div class='card-body'>
     <table class='table table-sm'>
       <thead class='table-secondary'>
@@ -36,11 +33,11 @@
         <tr>
           <td><%= permission[:id] %></td>
           <td><%= permission[:priority] %></td>
-          <td class='filter' id='filter-d'><%= permission[:verb] %></td>
-          <td class='filter' id='filter-f'><%= permission[:controller] %></td>
-          <td class='filter' id='filter-g'><%= permission[:action] %></td>
-          <td class='filter' id='filter-c'><%= permission[:alias] %></td>
-          <td class='filter' id='filter-e'><%= to_link.include?(permission[:action]) && !permission[:alias].nil? ? link_to(permission[:path], permission[:alias].to_sym) : permission[:path] %></td>
+          <td class='filter-d'><%= permission[:verb] %></td>
+          <td class='filter-f'><%= permission[:controller] %></td>
+          <td class='filter-g'><%= permission[:action] %></td>
+          <td class='filter-c'><%= permission[:alias] %></td>
+          <td class='filter-e'><%= link_to_route(permission) %></td>
         </tr>
         <% end %>
       </tbody>

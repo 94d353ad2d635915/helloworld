@@ -1,0 +1,39 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no", :name => "viewport"}/
+    %title LinAn
+    %meta{:content => "no", :name => "apple-mobile-web-app-capable"}/
+    %meta{:content => "True", :name => "HandheldFriendly"}/
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'console', media: 'all'#, 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'console'#, 'data-turbolinks-track': 'reload'
+
+  %body.container-fluid.row.console
+    #header
+      %nav.navbar.navbar-dark.bg-dark
+        .navbar-brand= link_to "LinAn", root_path
+
+        %ul.nav.justify-content-end
+          //- if !mobile?
+          - if user_signed_in?
+            %li.nav-item= link_to "登出", destroy_user_session_path, method: :delete, class: "nav-link"
+          - else
+            %li.nav-item= link_to "注册", new_user_registration_path, class: "nav-link"
+            %li.nav-item= link_to "登录", new_user_session_path, class: "nav-link"
+
+    #body.col-12
+      .sidebar
+        .unfold 展开/合拢
+        = raw getMenuTree(menuTree('Console', current_user))
+      .main
+        .card
+          .notice
+            - if notice
+              .alert.alert-primary= notice
+            - if alert
+              .alert.alert-warning= alert
+
+          = yield

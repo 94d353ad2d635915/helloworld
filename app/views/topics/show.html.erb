@@ -6,7 +6,7 @@
 </p>
 <p>
   <strong>Node:</strong>
-  <%= @topic.node.name if @topic.node %>
+  <%= link_to(@topic.node.name, @topic.node) if @topic.node %>
 </p>
 
 <p>

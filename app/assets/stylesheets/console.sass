@@ -1,0 +1,141 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ * require_tree .
+ * require_self
+ */
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap"
+// require normalize.css
+
+body
+  background-color: #ecf0f5
+  min-height: 4320px//8k:7,680x4,320
+  // display: flex
+a, a:hover
+  text-decoration: none
+tr, li label
+  &:hover 
+    background-color: #FFC107
+.container-fluid
+  padding: 0
+.row
+  margin: 0
+.col-12
+  padding: 0
+.card-body
+  padding: 0
+
+#header 
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 999
+  background-color: #2b3643
+  .navbar 
+    height: 3.5rem
+  .navbar-brand
+    a 
+      color: #36c6d3
+
+#body
+  margin-top: 3.5rem
+  border-top: 0
+  box-shadow: unset
+.sidebar
+  // margin-right: 1rem
+  float: left
+  // max-width: 200px
+  color: #b4bcc8
+  height: 100%
+  background-color: #364150
+.main
+  // float: right
+  background-color: #ecf0f5
+  // padding-right: 1rem
+  // padding-top: 1rem
+  .table 
+    font-size: .75rem
+    border: 2px solid #e2e2e2
+
+ul.tree
+  font-weight: 800
+  margin: 0
+  padding: 0
+  li
+    list-style: none
+    label
+      //display:block - 
+      //把链接显示为块元素可使整个链接区域可点击（不仅仅是文本）
+      //同时也允许我们规定宽度。
+      display: block
+      border-bottom: 1px solid #3d4957
+      padding: 1rem 1rem 1rem 1rem
+      color: #b4bcc8
+      margin: 0
+      letter-spacing: .5rem
+      cursor: pointer
+      &:before
+        content: "\23E9"//⏩
+        padding-right: .5rem
+        color: #cccccc
+      &:hover
+        color: #fff
+        background-color: #2b3643
+        cursor: pointer
+        color: #fff
+    a label
+      &:before 
+        content: "\1F535"
+        // background-color: unset
+        // &:before
+        //   content: "\1F534"
+  ul
+    font-weight: normal
+    display: none
+    background-color: #56595d
+    // position: relative
+    // left: 166px
+    // top: -4.25rem
+    // z-index: 999
+    li
+      label 
+        border-bottom: unset
+        padding: .5rem 1rem
+        // letter-spacing: 0.25rem
+        &:before
+          padding: 0 0 0 .5rem
+  li
+    a.active label
+      color: #fff
+      background-color: #1e2125
+      border-left: .5rem solid #f03a17
+      padding-left: .5rem
+      &:before
+        content: "\1F534"
+.unfold
+  text-align: center
+  background-color: #673AB7
+// .tree-root
+//   background-color: #FFEB3B
+// .tree-node,.tree-leaf
+//   display: none
+// .tree-active
+//   background-color: #ff5722
+ul.treeIndex
+  padding-left: 1rem
+  li 
+    list-style: none
+    &:hover 
+      background-color: #FFC107
+  span 
+    float: right

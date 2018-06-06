@@ -4,9 +4,7 @@ class Console::MenusController < Console::ApplicationController
   # GET /menus
   # GET /menus.json
   def index
-    # @menus = Menu.all.includes(:menu, :user, :permission)
-    @menus = get_menus
-    # @menus = get_menus('Console', current_user)
+    @menus = menuTree
   end
 
   # GET /menus/1
@@ -79,7 +77,7 @@ class Console::MenusController < Console::ApplicationController
 
     def menus_permissions
       @menus = Menu.all
-      @permissions = Permission.all
+      @permissions = Role.find_by(name: 'menus').permissions#Permission.all
         .where(verb: 'GET')
         .where.not(id: @menus.map(&:permission_id).compact.uniq - [@menu.permission_id])
       @menus = @menus.reject {|menu| menu.permission_id.presence }

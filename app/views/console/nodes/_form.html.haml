@@ -1,0 +1,35 @@
+= form_for([:console, node]) do |form|
+  - if node.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(node.errors.count, "error")
+        prohibited this node from being saved:
+      %ul
+        - node.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = form.label :node_id
+    = #form.text_field :node_id                                                                   |
+      form.select :node_id, Node.all.collect {|node| [node.name, node.id]}, {include_blank: true} |
+  .field
+    = form.label :name
+    = form.text_field :name
+  .field
+    = form.label :slug
+    = form.text_field :slug
+  .field
+    = form.label :tagline
+    = form.text_field :tagline
+  .field
+    = form.label :avatar
+    = fields_for :avatar, node.avatar do |avatar|
+      = avatar.text_field :url
+  .field
+    = form.label :user_id
+    = form.text_field :user_id
+  .field
+    = form.label :posttext
+    = fields_for :posttext, node.posttext do |posttext|
+      = posttext.text_area :body
+  .actions
+    = form.submit

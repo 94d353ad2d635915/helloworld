@@ -1,0 +1,51 @@
+= form_for([:console, menu]) do |form|
+  - if menu.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(menu.errors.count, "error")
+        prohibited this menu from being saved:
+      %ul
+        - menu.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = form.label :menu_id
+    = form.select :menu_id, @menus.collect{|menu| [menu.name, menu.id]}, {include_blank: true}
+  .field
+    = form.label :priority
+    = form.text_field :priority
+  .field
+    = form.label :name
+    = form.text_field :name
+  .card
+    = form.label :permission_id
+    .card-body
+      %table.table.table-sm
+        %thead.table-secondary
+          %tr
+            %th √
+            %th verb
+            %th path
+            %th alias
+            %th controller
+            %th action
+        %tbody.role_permissions.filter-list
+          %tr
+            %td= form.radio_button :permission_id, ""
+            %td (none)
+            %td
+            %td
+            %td
+            %td
+          = form.collection_radio_buttons(:permission_id, @permissions, :id, :path, {include_hidden: false}) do |b|
+            %tr
+              %td= b.radio_button
+              %td= b.object.verb
+              %td= b.object.path
+              %td= b.object.alias
+              %td= b.object.controller
+              %td= b.object.action
+  .field
+    = form.label :description
+    = form.text_field :description
+  .actions
+    = form.submit

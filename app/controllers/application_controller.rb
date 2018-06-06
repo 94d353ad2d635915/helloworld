@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
 
     def tree_parent_ids(objects=nil, tree_ids=[])
       tree_ids = [tree_ids] if tree_ids.class != Array
-      object_class_name = objects.first.class.name.downcase
+      object_class_name = objects.class.to_s.gsub(/::\S+/,'').downcase
       _tree_ids = objects.select{ |object| tree_ids.include?( object.id ) }.map(&("#{object_class_name}_id").to_sym)
       _tree_ids = tree_parent_ids(objects, _tree_ids) unless _tree_ids.empty?
       (tree_ids + _tree_ids).uniq

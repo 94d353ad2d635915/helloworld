@@ -1,0 +1,18 @@
+%table.table.table-sm
+  %thead
+    %tr
+      %th Title
+      %th Node
+      %th User
+      %th
+  %tbody
+    - @topics.each do |topic|
+      %tr
+        %td= topic.title
+        %td= topic.node.name if topic.node
+        / %td= topic.posttext.body if topic.posttext
+        %td= topic.user.email
+        %td
+          = link_to 'Show', console_topic_path(topic)
+          = link_to 'Edit', edit_console_topic_path(topic)
+          = link_to 'Destroy', console_topic_path(topic), method: :delete, data: { confirm: 'Are you sure?' }

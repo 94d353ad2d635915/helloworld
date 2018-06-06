@@ -1,0 +1,81 @@
+%p
+  %strong Role:
+  = @roles.select{|o| o.id == @role.role_id }.first.name if @role.role_id
+%p
+  %strong Name:
+  = @role.name
+%p
+  %strong Description:
+  = @role.description
+%p
+  %strong User:
+  = @role.user
+
+= link_to 'Edit', edit_console_role_path(@role)
+|
+= link_to 'Back', console_roles_path
+
+= form_for([:console, @role], url: console_role_permissions_path(@role)) do |form|
+  - if @role.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@role.errors.count, "error")
+        prohibited this role from being saved:
+      %ul
+        - @role.errors.full_messages.each do |message|
+          %li= message
+  .card
+    = form.label :permissions
+    .card-body
+      %table.table.table-sm
+        %thead.table-secondary
+          %tr
+            %th √
+            %th verb
+            %th controller
+            %th action
+            %th path
+            %th alias
+          %tr
+            %th#checked-all
+              = check_box_tag "", "*"
+            %th.filter#filter-a verb
+            %th path
+            %th alias
+            %th.filter#filter-b controller
+            %th.filter#filter-c action
+        %tbody.filter-list
+          = form.collection_check_boxes :permission_ids, @permissions, :id, :name, {include_hidden: false} do |b|
+            %tr
+              %td= b.check_box
+              %td.filter-a= b.object.verb
+              %td= link_to_route(b.object)
+              %td= b.object.alias
+              %td.filter-b= b.object.controller
+              %td.filter-c= b.object.action
+  .actions
+    = form.submit 'update permissions'
+= form_for([:console, @role], url: console_role_users_path(@role)) do |form|
+  - if @role.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@role.errors.count, "error")
+        prohibited this role from being saved:
+      %ul
+        - @role.errors.full_messages.each do |message|
+          %li= message
+  .card
+    = form.label :users
+    .card-body
+      %table.table.table-sm
+        %thead.table-secondary
+          %tr
+            %th √
+            %th verb
+        %tbody
+          = form.collection_check_boxes :user_ids, User.all, :id, :email, {include_hidden: false} do |b|
+            %tr
+              %td= b.check_box
+              %td= b.text
+  .actions
+    = form.submit 'update users'
