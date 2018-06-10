@@ -27,16 +27,31 @@ $(document).ready(function() {
     }
   });
 
-  $(".tree tr").on({
+  // $('.treeIndex li').hover(function() {
+  //       $(this).has("ul").children("ul").fadeIn();
+  //   },
+  //   function() {
+  //       $(this).has("ul").children("ul").hide();
+  //   });
+
+  $(".treeIndex li").on({
     click: function(e) { 
-      var _treeId = $(this).data('self');
-      if ($(this).hasClass('tree-active')){
-        $(this).removeClass('tree-active');
-        $(" .tree tr[data-father=" + _treeId + "]").css({display: 'none'});
-      } else {
-        $(this).addClass('tree-active');
-        $(".tree tr[data-father=" + _treeId + "]").css({display: 'table-row'});
-      }
+      // console.log($(this));
+      var _tree = $(this).has("ul").children('ul');
+      ( _tree.css('display') == 'block' ) ? _tree.hide() : _tree.show();
+      e.stopPropagation();
+    },
+    contextmenu: function(e) {
+      e.preventDefault();
+      var _tree = $(this).has("ul").find('ul');
+      var _display = 'none';
+      _tree.each(function(e) {
+        if ( $(this).css('display') == 'none' ) {
+          _display = 'block';
+        }
+      });
+      _tree.css({'display': _display});
+      e.stopPropagation();
     }
   });
 });

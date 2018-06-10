@@ -11,24 +11,23 @@ module ApplicationHelper
     _html
   end
 
-  def getMenuTreeIndex(tree, is_child=nil)
-    _class = is_child ? 'tree-node' : 'tree-root'
-    _html = ""
+  def getMenuTreeIndex(tree)
+    _html = "<ul>"
     tree.each do |menu|
-      _class = 'tree-leaf' if menu.permission_id
-      _node = "<li class='#{_class}' data-father='#{menu.menu_id}' data-self='#{menu.id}' data-priority='#{menu.priority}'>"
-      _node += check_box_tag ''
-      _node += link_to_route(menu.permission, menu.name)
-      _node += "<span>"
-      _node += link_to 'Show', console_menu_path(menu)
-      _node += link_to 'Edit', edit_console_menu_path(menu)
-      _node += link_to 'Destroy', console_menu_path(menu), method: :delete, data: { confirm: 'Are you sure?' }
-      _node += "</span>"
-      _node += "</li>"
-      _node += getMenuTreeIndex(menu.children, true) if menu.children
-      _html += is_child ? _node : "<ul class=treeIndex>#{_node}</ul>"
+      _html += "<li data-menu-id='#{menu.id}' data-priority='#{menu.priority}'>"
+      _html += "<div>"
+      _html += check_box_tag ''
+      _html += link_to_route(menu.permission, menu.name)
+      _html += "<span>"
+      _html += link_to 'Show', console_menu_path(menu)
+      _html += link_to 'Edit', edit_console_menu_path(menu)
+      _html += link_to 'Destroy', console_menu_path(menu), method: :delete, data: { confirm: 'Are you sure?' }
+      _html += "</span>"
+      _html += "</div>"
+      _html += getMenuTreeIndex(menu.children) if menu.children
+      _html += "</li>"
     end
-    is_child ? "<ul class=treeIndex>#{_html}</ul>" : _html
+    _html += "</ul>"
   end
 
 

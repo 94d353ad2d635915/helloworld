@@ -17,10 +17,12 @@ class ApplicationController < AppController
     end
 
     def canLink?(route)
-      return true if can?( Role.find_by(name: 'public'), route)
-      return false unless login?
-      return true if current_user.id == 1
-      return true if can?(Role.find_by(name: 'user'), route)
+      if login?
+        return true if current_user.id == 1
+        return true if can?(Role.find_by(name: 'user'), route)
+      else
+        return true if can?( Role.find_by(name: 'public'), route)
+      end
       false
     end
 end
