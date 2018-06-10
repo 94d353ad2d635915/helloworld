@@ -35,7 +35,7 @@
     <% end %>
   </tbody>
 </table>
-<%= render 'comments/form', comment: @comment %>
+<%= render('comments/form', comment: @comment) if login? %>
 
 <%= link_to 'Edit', edit_topic_path(@topic) %> |
 <%= link_to 'Back', topics_path %>

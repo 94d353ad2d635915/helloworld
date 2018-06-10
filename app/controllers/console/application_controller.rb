@@ -1,14 +1,20 @@
-class Console::ApplicationController < ApplicationController
-  before_action :login?
-  layout 'console'
+class Console::ApplicationController < AppController
+  before_action :canConsole?
+  layout :current_layout
   helper_method :menuTree
 
   private
-    def login?
-      raise ActionController::RoutingError.new('Not Found') if current_user.nil?
-      # http://101.70.102.199/console/permissions
+    def current_layout
+      'console'
     end
 
+    def canConsole?
+      # return authenticate_user! unless login?
+      html_404 unless login?
+      return true if current_user.id == 1
+      html_404 unless can?(current_user)
+      true
+    end
     # .empty?
     # not shown goto console url
     # force to console will be blocked.

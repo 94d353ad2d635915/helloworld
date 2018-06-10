@@ -10,8 +10,8 @@ class CreateRoles < ActiveRecord::Migration[5.2]
     end
     # permissions_roles
     create_table :assign_permissions_roles do |t|
-      t.belongs_to :role, index: true
-      t.belongs_to :permission, index: true
+      t.belongs_to :role, foreign_key: true
+      t.belongs_to :permission, foreign_key: true
       # extra attributes
       t.integer :assignee_id
       t.timestamps
@@ -22,8 +22,8 @@ class CreateRoles < ActiveRecord::Migration[5.2]
     # roles_users
     # Assignment
     create_table :assign_roles_users do |t|
-      t.belongs_to :role, index: true
-      t.belongs_to :user, index: true
+      t.belongs_to :role, foreign_key: true
+      t.belongs_to :user, foreign_key: true
       # extra attributes
       t.integer :assignee_id
       t.timestamps

@@ -159,6 +159,7 @@ class Console::RolesController < Console::ApplicationController
       @roles = Role.all
       role_id = params[:id].to_i
       @role = @roles.select{|o| o.id == role_id }.first
+      puts @role.id
       # @role = Role.find(params[:id])
     end
 

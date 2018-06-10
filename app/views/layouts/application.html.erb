@@ -10,6 +10,11 @@
   </head>
 
   <body>
+    <% if login? %>
+    <%= link_to "登出", destroy_user_session_path, method: :delete, class: "nav-link" %>
+    <% else %>
+    <%= link_to "登录", new_user_session_path, class: "nav-link" %>
+    <% end %>
     <%= yield %>
   </body>
 </html>
