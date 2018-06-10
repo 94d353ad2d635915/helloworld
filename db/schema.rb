@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_01_103913) do
+ActiveRecord::Schema.define(version: 2018_06_10_073808) do
 
   create_table "assign_permissions_roles", force: :cascade do |t|
     t.integer "role_id"
@@ -95,6 +95,16 @@ ActiveRecord::Schema.define(version: 2018_06_01_103913) do
     t.string "textable_type"
     t.integer "textable_id"
     t.index ["textable_type", "textable_id"], name: "index_posttexts_on_textable_type_and_textable_id"
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "location"
+    t.string "company"
+    t.string "tagline"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|

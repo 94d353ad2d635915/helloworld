@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resource :settings, controller: 'profiles', only: [:show, :update, :destroy]
+
   root 'topics#index'
   resources :nodes, only: [:show]
   resources :topics do 
@@ -8,6 +10,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :console do
+    resources :profiles
     root to: "home#index", as: "root"
     patch 'roles/:id/permissions', to: 'roles#update_role_permissions', as: 'role_permissions'
     patch 'roles/:id/users', to: 'roles#update_role_users', as: 'role_users'

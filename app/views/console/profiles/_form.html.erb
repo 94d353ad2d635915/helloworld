@@ -1,0 +1,46 @@
+<%= form_for([:console, profile], local: true) do |form| %>
+  <% if profile.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
+
+      <ul>
+      <% profile.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :avatar %>
+    <%= fields_for :avatar, profile.avatar do |avatar| %>
+      <%= avatar.text_field :url %>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :location %>
+    <%= form.text_field :location %>
+  </div>
+
+  <div class="field">
+    <%= form.label :company %>
+    <%= form.text_field :company %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tagline %>
+    <%= form.text_field :tagline %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bio %>
+    <%= fields_for :posttext, profile.posttext do |posttext| %>
+      <%= posttext.text_area :body %>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @profile.user.email %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= image_tag @profile.avatar.url if @profile.avatar %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @profile.location %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @profile.company %>
+</p>
+
+<p>
+  <strong>Tagline:</strong>
+  <%= @profile.tagline %>
+</p>
+
+<p>
+  <strong>bio:</strong>
+  <%= @profile.posttext.body %>
+</p>
+<%= link_to 'Edit', edit_console_profile_path(@profile) %> |
+<%= link_to 'Back', console_profiles_path %>

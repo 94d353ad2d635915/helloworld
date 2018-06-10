@@ -11,7 +11,9 @@
 
   <body>
     <% if login? %>
-    <%= link_to "登出", destroy_user_session_path, method: :delete, class: "nav-link" %>
+    <%= link_to "首页", root_path %>
+    <%= link_to "设置", settings_path %>
+    <%= link_to "登出", destroy_user_session_path, method: :delete %>
     <% else %>
     <%= link_to "登录", new_user_session_path, class: "nav-link" %>
     <% end %>

@@ -5,10 +5,13 @@ class ApplicationController < AppController
     def cancan?
       # can? 默认是否为公开权限
       # 若不是，则登录
-      return true if is_public?
-      authenticate_user! unless login?
-      return true if current_user.id == 1
-      return true if can?(Role.find_by(name: 'user'))
+      if login?
+        return true if current_user.id == 1
+        return true if can?(Role.find_by(name: 'user'), route)
+      else
+        return true if is_public?
+        authenticate_user! unless login?
+      end
       false
     end
 
