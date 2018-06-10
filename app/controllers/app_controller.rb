@@ -1,7 +1,37 @@
 class AppController < ActionController::Base
   helper_method :login?, :current_layout
+  before_action :creat_eventlog
 
   private
+    def route_permission(route=nil)
+      if route.nil?
+        route = params.permit(:controller, :action).to_h
+        route[:verb] = request.request_method
+      end
+      permission = Permission.all.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
+
+      # puts "#"*2**7
+      # puts route
+      # puts permission.size
+      # puts "#"*2**7
+      
+      permission.empty? ? nil : permission.first
+    end
+
+    def creat_eventlog(permission=route_permission)
+      if permission
+        event = Event.find_by(permission_id: permission.id)
+        if event
+          eventlog = current_user.eventlogs.build
+          eventlog.ip = request.remote_ip
+          eventlog.user_agent = request.user_agent
+          eventlog.event = event
+          eventlog.save
+          # eventlog.description = event.description
+        end
+      end
+    end
+
     def current_layout
     end
     
@@ -16,17 +46,14 @@ class AppController < ActionController::Base
       # can?(role_public)
       # can?(role_user)
       #object = login? ? current_user : Role.find_by(name: 'public'))
-      if route.nil?
-        route = params.permit(:controller, :action).to_h
-        #route[:verb] = request.request_method
-      end
-      permission = object.permissions.uniq.select{|o| route.eql?( o.slice(:controller, :action) )}
-      # puts "#"*2**7
-      # puts route
-      # puts permission.size
-      # puts "#"*2**7
-      
-      permission.empty? ? false : true
+
+      # if route.nil?
+      #   route = params.permit(:controller, :action).to_h
+      #   route[:verb] = request.request_method
+      # end
+      # permission = object.permissions.uniq.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
+      permission = route_permission(route)
+      permission ? object.permissions.ids.uniq.include?(permission.id) : false
     end
 
     def login?

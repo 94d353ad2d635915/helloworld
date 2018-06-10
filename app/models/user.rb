@@ -17,4 +17,5 @@ class User < ApplicationRecord
   # user.permissions
   # not single assign permissions to user, must by role to assign permissions to user
   has_one :profile, dependent: :destroy
+  has_many :eventlogs
 end

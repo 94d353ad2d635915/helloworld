@@ -1,0 +1,28 @@
+%p#notice= notice
+%h1 Events
+%table.table.table-sm
+  %thead.table-secondary
+    %tr
+      %th#checked-all √
+      %th permission.id
+      %th.filter#filter-b controller
+      %th.filter#filter-c action
+      %th event.description
+      %th operation
+  %tbody.filter-list.events
+    - @permissions = Permission.all.includes(:event)
+    - @permissions.each do |permission|
+      %tr
+        - event = permission.event
+        - event ||= Event.new
+        = form_for [:console, event] do |form|
+          / - puts event[:permission_id]
+          %td= form.check_box :permission_id, {}, permission.id, ""
+          %td= permission.id
+          %td.filter-b= permission.controller
+          %td.filter-c= "#{permission.action} [#{permission.verb}]"
+          %td= form.text_field :description
+          %td
+            = form.button '保存'
+            = link_to('删除', console_event_path(event), remote: true, method: :delete) if event.valid?
+

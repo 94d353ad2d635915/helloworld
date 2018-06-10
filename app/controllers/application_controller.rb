@@ -7,7 +7,7 @@ class ApplicationController < AppController
       # 若不是，则登录
       if login?
         return true if current_user.id == 1
-        return true if can?(Role.find_by(name: 'user'), route)
+        return true if can?(Role.find_by(name: 'user'))
       else
         return true if is_public?
         authenticate_user! unless login?
@@ -24,7 +24,7 @@ class ApplicationController < AppController
         return true if current_user.id == 1
         return true if can?(Role.find_by(name: 'user'), route)
       else
-        return true if can?( Role.find_by(name: 'public'), route)
+        return true if can?(Role.find_by(name: 'public'), route)
       end
       false
     end

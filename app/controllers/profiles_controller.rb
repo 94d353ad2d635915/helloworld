@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :update, :destroy]
-  after_action only: [:create, :update] do 
+  after_action only: [:update] do 
     update_posttext(@profile, posttext_params)
     update_avatar(@profile, avatar_params)
   end

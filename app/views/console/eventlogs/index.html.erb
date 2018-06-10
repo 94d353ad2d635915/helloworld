@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Eventlogs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Created at</th>
+      <th>ip</th>
+      <th>User agent</th>
+      <th>User</th>
+      <th>Event</th>
+      <th>Description</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @eventlogs.each do |eventlog| %>
+      <tr>
+        <td><%= eventlog.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= eventlog.ip %></td>
+        <td><%= eventlog.user_agent %></td>
+        <td><%= eventlog.user.email %></td>
+        <td><%= eventlog.event.id %></td>
+        <td><%= eventlog.event.description %></td>
+        <td><%= link_to 'Show', console_eventlog_path(eventlog) %></td>
+        <td><%= link_to 'Destroy', console_eventlog_path(eventlog), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

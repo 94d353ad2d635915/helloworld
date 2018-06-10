@@ -37,10 +37,10 @@ module ApplicationHelper
     # html_options = convert_options_to_data_attributes(options, html_options)
     # https://github.com/rails/rails/blob/master/actionpack/test/controller/routing_test.rb
     # @routes =ActionDispatch::Routing::RouteSet.new
-    route = Rails.application.routes.recognize_path(url_for(options), html_options.slice(:method)).slice(:controller, :action).stringify_keys
-    #route[:verb] = html_options.slice(:method).empty? ? 'GET' : 'DELETE'
+    route = Rails.application.routes.recognize_path(url_for(options), html_options.slice(:method)).slice(:controller, :action)
+    route[:verb] = html_options.slice(:method).empty? ? 'GET' : 'DELETE'
     # Rails.application.routes.recognize_path
-    super if current_layout.presence || canLink?(route)
+    super if current_layout.presence || canLink?(route.stringify_keys)
   end
 
   def link_to_route(route, name=nil)

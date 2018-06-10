@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_10_073808) do
+ActiveRecord::Schema.define(version: 2018_06_10_113915) do
 
   create_table "assign_permissions_roles", force: :cascade do |t|
     t.integer "role_id"
@@ -48,6 +48,25 @@ ActiveRecord::Schema.define(version: 2018_06_10_073808) do
     t.datetime "updated_at", null: false
     t.index ["topic_id"], name: "index_comments_on_topic_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "eventlogs", force: :cascade do |t|
+    t.datetime "created_at"
+    t.string "ip"
+    t.string "user_agent"
+    t.integer "user_id"
+    t.integer "event_id"
+    t.string "description"
+    t.index ["event_id"], name: "index_eventlogs_on_event_id"
+    t.index ["user_id"], name: "index_eventlogs_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer "permission_id"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_events_on_permission_id"
   end
 
   create_table "menus", force: :cascade do |t|

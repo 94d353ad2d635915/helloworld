@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Create at:</strong>
+  <%= @eventlog.created_at %>
+</p>
+
+<p>
+  <strong>User agent:</strong>
+  <%= @eventlog.user_agent %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @eventlog.user.email %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @eventlog.event.id %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @eventlog.description %>
+</p>
+
+<%= link_to 'Back', console_eventlogs_path %>
