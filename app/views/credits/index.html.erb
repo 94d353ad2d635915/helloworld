@@ -1,0 +1,44 @@
+<h1>Credits</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Currency</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @credits.each do |credit| %>
+      <tr>
+        <td><%= credit.currency %></td>
+        <td><%= credit.balance %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<table class='table table-sm'>
+  <thead>
+    <tr>
+      <th>created_at</th>
+      <th>ip</th>
+      <th>event_id</th>
+      <th>Currency</th>
+      <th>Amount</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @creditlogs.each do |creditlog| %>
+      <tr>
+        <td><%= creditlog.created_at %></td>
+        <td><%= creditlog.eventlog.ip %></td>
+        <td><%= creditlog.eventlog.event.description %></td>
+        <td><%= creditlog.currency %></td>
+        <td><%= creditlog.amount %></td>
+        <td><%= creditlog.balance %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

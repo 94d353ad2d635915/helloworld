@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_10_113915) do
+ActiveRecord::Schema.define(version: 2018_06_11_045013) do
 
   create_table "assign_permissions_roles", force: :cascade do |t|
     t.integer "role_id"
@@ -50,6 +50,27 @@ ActiveRecord::Schema.define(version: 2018_06_10_113915) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "creditlogs", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "eventlog_id"
+    t.string "currency"
+    t.integer "amount"
+    t.integer "balance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["eventlog_id"], name: "index_creditlogs_on_eventlog_id"
+    t.index ["user_id"], name: "index_creditlogs_on_user_id"
+  end
+
+  create_table "credits", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "currency", null: false
+    t.integer "balance", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_credits_on_user_id"
+  end
+
   create_table "eventlogs", force: :cascade do |t|
     t.datetime "created_at"
     t.string "ip"
@@ -66,6 +87,8 @@ ActiveRecord::Schema.define(version: 2018_06_10_113915) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency"
+    t.integer "amount", default: 0
     t.index ["permission_id"], name: "index_events_on_permission_id"
   end
 

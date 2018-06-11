@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event: one
+  currency: MyString
+  amount: 1
+  balance: 1
+
+two:
+  event: two
+  currency: MyString
+  amount: 1
+  balance: 1

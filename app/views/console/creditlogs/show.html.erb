@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @creditlog.user_id %>
+</p>
+
+<p>
+  <strong>EventLog:</strong>
+  <%= @creditlog.eventlog_id %>
+</p>
+
+<p>
+  <strong>Currency:</strong>
+  <%= @creditlog.currency %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @creditlog.amount %>
+</p>
+
+<p>
+  <strong>Balance:</strong>
+  <%= @creditlog.balance %>
+</p>
+
+<%= link_to 'Back', console_creditlogs_path %>

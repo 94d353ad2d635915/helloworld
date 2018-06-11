@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :credits, only: [:index]
   resource :settings, controller: 'profiles', only: [:show, :update, :destroy]
 
   root 'topics#index'
@@ -10,6 +11,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :console do
+    resources :creditlogs, only: [:index, :show, :destroy]
+    resources :credits
     resources :eventlogs, only: [:index, :show, :destroy]
     resources :events
     resources :profiles

@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Creditlogs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>EventLog</th>
+      <th>Currency</th>
+      <th>Amount</th>
+      <th>Balance</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @creditlogs.each do |creditlog| %>
+      <tr>
+        <td><%= creditlog.user_id %></td>
+        <td><%= creditlog.eventlog_id %></td>
+        <td><%= creditlog.currency %></td>
+        <td><%= creditlog.amount %></td>
+        <td><%= creditlog.balance %></td>
+        <td><%= link_to 'Show', console_creditlog_path(creditlog) %></td>
+        <td><%= link_to 'Destroy', console_creditlog_path(creditlog), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

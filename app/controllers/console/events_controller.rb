@@ -70,6 +70,6 @@ class Console::EventsController < Console::ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:permission_id, :description)
+      params.require(:event).permit(:permission_id, :description, :currency, :amount)
     end
 end

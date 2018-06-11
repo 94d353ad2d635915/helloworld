@@ -8,6 +8,8 @@
       %th.filter#filter-b controller
       %th.filter#filter-c action
       %th event.description
+      %th event.currency
+      %th event.amount
       %th operation
   %tbody.filter-list.events
     - @permissions = Permission.all.includes(:event)
@@ -22,6 +24,8 @@
           %td.filter-b= permission.controller
           %td.filter-c= "#{permission.action} [#{permission.verb}]"
           %td= form.text_field :description
+          %td= form.text_field :currency
+          %td= form.text_field :amount
           %td
             = form.button '保存'
             = link_to('删除', console_event_path(event), remote: true, method: :delete) if event.valid?
