@@ -11,8 +11,8 @@
   <tbody>
     <% @credits.each do |credit| %>
       <tr>
-        <td><%= credit.currency %></td>
-        <td><%= credit.balance %></td>
+        <td><%= money_name(credit.currency) %></td>
+        <td><%= money(credit.balance, credit.currency) %></td>
       </tr>
     <% end %>
   </tbody>
@@ -32,12 +32,12 @@
   <tbody>
     <% @creditlogs.each do |creditlog| %>
       <tr>
-        <td><%= creditlog.created_at %></td>
+        <td><%= creditlog.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td><%= creditlog.eventlog.ip %></td>
-        <td><%= creditlog.eventlog.event.description %></td>
-        <td><%= creditlog.currency %></td>
-        <td><%= creditlog.amount %></td>
-        <td><%= creditlog.balance %></td>
+        <td><%= "#{creditlog.event.description}:#{creditlog.eventlog.description}" %></td>
+        <td><%= money_name(creditlog.currency) %></td>
+        <td><%= money(creditlog.amount, creditlog.currency) %></td>
+        <td><%= money(creditlog.balance, creditlog.currency) %></td>
       </tr>
     <% end %>
   </tbody>

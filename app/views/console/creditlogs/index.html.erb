@@ -18,10 +18,10 @@
     <% @creditlogs.each do |creditlog| %>
       <tr>
         <td><%= creditlog.user_id %></td>
-        <td><%= creditlog.eventlog_id %></td>
-        <td><%= creditlog.currency %></td>
-        <td><%= creditlog.amount %></td>
-        <td><%= creditlog.balance %></td>
+        <td><%= "#{creditlog.event.description}:#{creditlog.eventlog.description}" %></td>
+        <td><%= money_name(creditlog.currency) %></td>
+        <td><%= money(creditlog.amount, creditlog.currency) %></td>
+        <td><%= money(creditlog.balance, creditlog.currency) %></td>
         <td><%= link_to 'Show', console_creditlog_path(creditlog) %></td>
         <td><%= link_to 'Destroy', console_creditlog_path(creditlog), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

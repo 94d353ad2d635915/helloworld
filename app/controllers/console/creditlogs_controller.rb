@@ -4,7 +4,7 @@ class  Console::CreditlogsController <  Console::ApplicationController
   # GET /creditlogs
   # GET /creditlogs.json
   def index
-    @creditlogs = Creditlog.all
+    @creditlogs = Creditlog.all.order('created_at DESC').includes(:user, :eventlog)
   end
 
   # GET /creditlogs/1

@@ -1,6 +1,6 @@
 class AppController < ActionController::Base
   helper_method :login?, :current_layout
-  before_action :creat_eventlog
+  after_action :creat_eventlog
 
   private
     def route_permission(route=nil)
@@ -14,20 +14,23 @@ class AppController < ActionController::Base
       # puts route
       # puts permission.size
       # puts "#"*2**7
-      
+
       permission.empty? ? nil : permission.first
     end
 
     def creat_eventlog(permission=route_permission)
-      if permission
+      if login? and permission
         event = Event.find_by(permission_id: permission.id)
+        # puts response.to_a
         if event
+          object = eval("@#{permission[:controller].gsub(/s$/,'')}")
+          return if object.id.nil?
           eventlog = current_user.eventlogs.build
           eventlog.ip = request.remote_ip
           eventlog.user_agent = request.user_agent
           eventlog.event = event
+          eventlog.description = object.id
           eventlog.save
-          # eventlog.description = event.description
           creat_creditlog(event,eventlog)
         end
       end

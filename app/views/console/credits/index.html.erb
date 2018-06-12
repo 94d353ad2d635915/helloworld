@@ -16,8 +16,8 @@
     <% @credits.each do |credit| %>
       <tr>
         <td><%= credit.user.email %></td>
-        <td><%= credit.currency %></td>
-        <td><%= credit.balance %></td>
+        <td><%= money_name(credit.currency) %></td>
+        <td><%= money(credit.balance, credit.currency) %></td>
         <td><%= link_to 'Show', console_credit_path(credit) %></td>
         <td><%= link_to 'Edit', edit_console_credit_path(credit) %></td>
         <td><%= link_to 'Destroy', console_credit_path(credit), method: :delete, data: { confirm: 'Are you sure?' } %></td>

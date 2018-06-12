@@ -1,4 +1,5 @@
 module ApplicationHelper
+
   def getMenuTree(tree)
     _html = "<ul class=tree>"
     tree.each do |menu|
@@ -53,5 +54,15 @@ module ApplicationHelper
       end
     end
     name
+  end
+
+  def money(credit, currency)
+    currency = CURRENCIES[currency.upcase]
+    currency ||= {symbol: ''}
+    "#{currency[:symbol]}#{number_with_delimiter(credit*0.01)}"
+  end
+
+  def money_name(currency)
+    CURRENCIES[currency.upcase][:name]
   end
 end

@@ -22,8 +22,8 @@
         <td><%= eventlog.ip %></td>
         <td><%= eventlog.user_agent %></td>
         <td><%= eventlog.user.email %></td>
-        <td><%= eventlog.event.id %></td>
         <td><%= eventlog.event.description %></td>
+        <td><%= eventlog.description %></td>
         <td><%= link_to 'Show', console_eventlog_path(eventlog) %></td>
         <td><%= link_to 'Destroy', console_eventlog_path(eventlog), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

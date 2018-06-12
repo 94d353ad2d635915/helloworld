@@ -33,6 +33,13 @@ module LinanApp
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.time_zone = 'Beijing'  
+    config.time_zone = 'Beijing'
   end
 end
+
+CURRENCIES = {
+  'USD' => {symbol: '$', name: '美元'},
+  'CNY' => {symbol: '¥', name: '人民币'},
+  'POINTS' => {symbol: '', name: '积分'},
+  'BITCOIN' => {symbol: '₿', name: '比特币'},
+}
