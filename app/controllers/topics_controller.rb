@@ -7,7 +7,7 @@ class TopicsController < ApplicationController
   # GET /topics
   # GET /topics.json
   def index
-    @topics = Topic.all.includes(:user, :posttext, :node)
+    @topics = Topic.all.includes(:user, :node)
   end
 
   # GET /topics/1

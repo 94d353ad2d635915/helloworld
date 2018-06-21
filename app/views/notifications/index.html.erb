@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Notifications</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sender</th>
+      <th>Type</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notifications.each do |notification| %>
+      <tr>
+        <td><%= notification.sender.email %></td>
+        <td><%= notification._type %></td>
+        <td><%= link_to notification.notifiable.title, notification.notifiable if notification.notifiable %></td>
+        <td><%= link_to 'Destroy', notification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

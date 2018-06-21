@@ -28,5 +28,5 @@
           %td= form.text_field :amount
           %td
             = form.button '保存'
-            = link_to('删除', console_event_path(event), remote: true, method: :delete) if event.valid?
+            = link_to('删除', console_event_path(event), method: :delete) if event.valid?
 

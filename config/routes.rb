@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :notifications, only: [:index, :destroy]
   resources :credits, only: [:index]
   resource :settings, controller: 'profiles', only: [:show, :update, :destroy]
 
@@ -11,6 +12,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :console do
+    resource :notifications, only: [:show, :destroy]
     resources :creditlogs, only: [:index, :show, :destroy]
     resources :credits
     resources :eventlogs, only: [:index, :show, :destroy]

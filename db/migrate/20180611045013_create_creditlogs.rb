@@ -6,8 +6,6 @@ class CreateCreditlogs < ActiveRecord::Migration[5.2]
       t.string :currency
       t.integer :amount
       t.integer :balance
-
-      t.timestamps
     end
 
     change_table(:events) do |t|

@@ -20,4 +20,5 @@ class User < ApplicationRecord
   has_many :eventlogs
   has_many :credits
   has_many :creditlogs
+  has_many :notifications
 end

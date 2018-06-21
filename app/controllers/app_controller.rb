@@ -39,11 +39,14 @@ class AppController < ActionController::Base
     def creat_creditlog(event,eventlog=nil)
       if login? and eventlog and event.currency and event.amount != 0
         user_credit = current_user.credits.select{|o| o.currency == event.currency }.first
+        unless user_credit
+          user_credit = current_user.credits.build(currency: event.currency, balance: 0)
+        end
         if !user_credit.valid? or (user_credit.balance += event.amount) < 0
-          respond_to do |format|
+          # respond_to do |format|
             notice = "该操作需要消耗：#{event.amount} #{event.currency}，你没有足够的“#{event.currency}”，请充值后进行该项操作。"
-            format.html { redirect_to root_path, notice: notice }
-          end
+            # format.html { redirect_to root_path, notice: notice }
+          # end
           return
         end
         user_credit.save

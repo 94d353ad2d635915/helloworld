@@ -1,0 +1,21 @@
+
+<h1>Notifications
+（<%= link_to 'Destroy', console_notifications_path, method: :delete, data: { confirm: 'Are you sure?' } %>）</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notifications_type_count.each do |_type, _count| %>
+      <tr>
+        <td><%= _type %></td>
+        <td><%= _count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

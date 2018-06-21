@@ -59,7 +59,7 @@ module ApplicationHelper
   def money(credit, currency)
     currency = CURRENCIES[currency.upcase]
     currency ||= {symbol: ''}
-    "#{currency[:symbol]}#{number_with_delimiter(credit*0.01)}"
+    "#{currency[:symbol]} #{number_with_delimiter(credit*0.01)}"
   end
 
   def money_name(currency)
