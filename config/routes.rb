@@ -26,7 +26,6 @@ Rails.application.routes.draw do
     get 'permissions', to: 'permissions#index'
     patch 'permissions', to: 'permissions#update'
     resources :nodes
-    resources :avatars, only: [:index, :destroy]
     resources :comments, except: [:new, :create]
     resources :topics do 
       # resources :comments

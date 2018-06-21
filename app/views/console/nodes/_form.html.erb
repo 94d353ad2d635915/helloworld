@@ -34,10 +34,9 @@
   </div>
 
   <div class="field">
+    <%= image_tag node.avatar if node.avatar %>
     <%= form.label :avatar %>
-    <%= fields_for :avatar, node.avatar do |avatar| %>
-      <%= avatar.text_field :url %>
-    <% end %>
+    <%= form.text_field :avatar %>
   </div>
 
   <div class="field">

@@ -12,11 +12,9 @@
   <% end %>
 
   <div class="field">
-    <%= image_tag profile.avatar.url if profile.avatar %>
+    <%= image_tag profile.avatar if profile.avatar %>
     <%= form.label :avatar %>
-    <%= fields_for :avatar, profile.avatar do |avatar| %>
-      <%= avatar.text_field :url %>
-    <% end %>
+    <%= form.text_field :avatar %>
   </div>
 
   <div class="field">

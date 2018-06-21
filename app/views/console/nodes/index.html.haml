@@ -17,7 +17,7 @@
         %td= node.node_id
         %td= node.name
         %td= node.slug
-        %td= image_tag(node.avatar.url, size: 48) if node.avatar
+        %td= image_tag(node.avatar, size: 48) if node.avatar
         %td= node.tagline
         %td= node.user.email
         / %td= node.posttext.body if node.posttext

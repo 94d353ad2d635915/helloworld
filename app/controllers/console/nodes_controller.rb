@@ -2,13 +2,12 @@ class  Console::NodesController <  Console::ApplicationController
   before_action :set_node, only: [:show, :edit, :update, :destroy]
   after_action only: [:create, :update] do 
     update_posttext(@node, posttext_params)
-    update_avatar(@node, avatar_params)
   end
 
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all.includes(:posttext, :node, :avatar, :user)
+    @nodes = Node.all.includes(:posttext, :node, :user)
   end
 
   # GET /nodes/1
@@ -73,14 +72,10 @@ class  Console::NodesController <  Console::ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def node_params
-      params.require(:node).permit(:node_id, :name, :slug, :tagline)
+      params.require(:node).permit(:node_id, :name, :slug, :tagline, :avatar)
     end
 
     def posttext_params
       params.require(:posttext).permit(:body)
-    end
-
-    def avatar_params
-      params.require(:avatar).permit(:url)
     end
 end

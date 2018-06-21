@@ -1,7 +1,6 @@
 class Node < ApplicationRecord
   belongs_to :node, optional: true
   belongs_to :user
-  has_one :avatar, as: :avatarable, dependent: :destroy
   has_one :posttext, as: :textable, dependent: :destroy
   has_many :topics
   validates :name, :slug, presence: true

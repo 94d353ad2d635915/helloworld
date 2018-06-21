@@ -12,8 +12,8 @@
   <% end %>
   <div class="field">
     <%= form.label :posttext %>
-    <%= fields_for :posttext, comment.posttext do |posttext| %>
-      <%=  posttext.text_area :body %>
+    <%= fields_for :posttext do |f| %>
+      <%= f.text_area :body %>
     <% end %>
   </div>
 

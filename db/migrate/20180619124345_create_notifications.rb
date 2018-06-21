@@ -1,7 +1,7 @@
 class CreateNotifications < ActiveRecord::Migration[5.2]
   def change
     create_table :notifications do |t|
-      t.belongs_to :user, foreign_key: true
+      t.belongs_to :user
       t.integer :sender_id
       t.integer :_type, null: false
       t.references :notifiable, polymorphic: true, index: false

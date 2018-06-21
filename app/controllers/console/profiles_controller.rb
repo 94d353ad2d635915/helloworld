@@ -2,7 +2,6 @@ class Console::ProfilesController < Console::ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
   after_action only: [:create, :update] do 
     update_posttext(@profile, posttext_params)
-    update_avatar(@profile, avatar_params)
   end
 
   # GET /profiles
@@ -75,14 +74,10 @@ class Console::ProfilesController < Console::ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_params
-      params.require(:profile).permit(:user_id, :location, :company, :tagline)
+      params.require(:profile).permit(:user_id, :location, :company, :tagline, :avatar)
     end
 
     def posttext_params
       params.require(:posttext).permit(:body)
-    end
-
-    def avatar_params
-      params.require(:avatar).permit(:url)
     end
 end

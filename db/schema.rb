@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_19_124345) do
+ActiveRecord::Schema.define(version: 2018_06_21_094613) do
 
   create_table "assign_permissions_roles", force: :cascade do |t|
     t.integer "role_id"
@@ -32,13 +32,6 @@ ActiveRecord::Schema.define(version: 2018_06_19_124345) do
     t.index ["assignee_id"], name: "index_assign_roles_users_on_assignee_id"
     t.index ["role_id"], name: "index_assign_roles_users_on_role_id"
     t.index ["user_id"], name: "index_assign_roles_users_on_user_id"
-  end
-
-  create_table "avatars", force: :cascade do |t|
-    t.string "url"
-    t.string "avatarable_type"
-    t.integer "avatarable_id"
-    t.index ["avatarable_type", "avatarable_id"], name: "index_avatars_on_avatarable_type_and_avatarable_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -114,6 +107,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_124345) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avatar"
     t.index ["node_id"], name: "index_nodes_on_node_id"
     t.index ["user_id"], name: "index_nodes_on_user_id"
   end
@@ -160,6 +154,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_124345) do
     t.string "tagline"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avatar"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
