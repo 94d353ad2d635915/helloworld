@@ -37,5 +37,6 @@
 </table>
 <%= render 'console/comments/form', comment: @comment %>
 
+<%= link_to 'Destroy', console_topic_path(@topic), method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Edit', edit_console_topic_path(@topic) %> |
 <%= link_to 'Back', console_topics_path %>

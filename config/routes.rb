@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   resources :notifications, only: [:index, :destroy]
   resources :credits, only: [:index]
-  resource :settings, controller: 'profiles', only: [:show, :update, :destroy]
+  resource :settings, controller: 'profiles', only: [:show, :update]
 
   root 'topics#index'
   resources :nodes, only: [:show]
-  resources :topics do 
-    resources :comments, only: [:create, :destroy]
+  resources :topics, except: [:destroy] do 
+    resources :comments, only: [:create]
   end
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

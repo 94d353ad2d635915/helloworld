@@ -1,6 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:destroy]
-  before_action :set_topic, only: [:create, :destroy]
+  before_action :set_topic, only: [:create]
 
   def create
     @comment = @topic.comments.build(comment_params)
@@ -18,19 +17,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def destroy
-    @comment.destroy
-    respond_to do |format|
-      format.html { redirect_to @topic, notice: 'Comment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
-
     def set_topic
       @topic = Topic.find(params[:topic_id])
     end

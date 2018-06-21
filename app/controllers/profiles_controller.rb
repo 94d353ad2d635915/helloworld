@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile, only: [:show, :update, :destroy]
+  before_action :set_profile, only: [:show, :update]
   after_action only: [:update] do 
     update_posttext(@profile, posttext_params)
   end
@@ -20,14 +20,6 @@ class ProfilesController < ApplicationController
         format.html { render :edit }
         format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  def destroy
-    @profile.destroy
-    respond_to do |format|
-      format.html { redirect_to settings_path, notice: 'Profile was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

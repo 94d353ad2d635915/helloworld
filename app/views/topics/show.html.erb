@@ -22,7 +22,6 @@
   <thead>
     <tr>
       <th>Posttext</th>
-      <th colspan="3"></th>
     </tr>
   </thead>
 
@@ -30,7 +29,6 @@
     <% @comments.each do |comment| %>
       <tr>
         <td><%= comment.posttext.body if comment.posttext %></td>
-        <td><%= link_to 'Destroy', topic_comment_path(@topic, comment), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
