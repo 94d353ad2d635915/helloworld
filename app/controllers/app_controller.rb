@@ -93,17 +93,17 @@ class AppController < ActionController::Base
     end
 
     def update_posttext(object, params)
+      update_nested_attributes(object, 'posttext', params)
+    end
+
+    def update_nested_attributes(object, nested, params)
       return false unless object.valid?
-      if object.posttext.nil?
-        if params[:body].presence
-          object.create_posttext(params)
-        end
+      nested = object.send(nested)
+      params.select!{ |k,v| !v.blank? }
+      if nested.nil?
+        object.create_posttext(params) unless params.empty?
       else
-        if params[:body].presence
-          object.posttext.update(params)
-        else
-          object.posttext.destroy
-        end
+        params.empty? ? nested.destroy : nested.update(params)
       end
       return true
     end

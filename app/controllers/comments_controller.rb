@@ -1,12 +1,9 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:destroy]
   before_action :set_topic, only: [:create, :destroy]
-  after_action only: [:create] do 
-    update_posttext(@comment, posttext_params)
-  end
 
   def create
-    @comment = @topic.comments.build
+    @comment = @topic.comments.build(comment_params)
     @comment.user = current_user
 
     respond_to do |format|
@@ -38,7 +35,7 @@ class CommentsController < ApplicationController
       @topic = Topic.find(params[:topic_id])
     end
 
-    def posttext_params
-      params.require(:posttext).permit(:body)
+    def comment_params
+      params.require(:comment).permit(posttext_attributes: [:body])
     end
 end

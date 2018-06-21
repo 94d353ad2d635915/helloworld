@@ -12,7 +12,7 @@
   <% end %>
   <div class="field">
     <%= form.label :posttext %>
-    <%= fields_for :posttext do |f| %>
+    <%= form.fields_for :posttext_attributes do |f| %>
       <%= f.text_area :body %>
     <% end %>
   </div>

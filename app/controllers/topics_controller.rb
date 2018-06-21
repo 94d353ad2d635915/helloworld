@@ -1,8 +1,5 @@
 class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
-  after_action only: [:create, :update] do 
-    update_posttext(@topic, posttext_params)
-  end
 
   # GET /topics
   # GET /topics.json
@@ -73,9 +70,6 @@ class TopicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topic_params
-      params.require(:topic).permit(:title, :node_id)
-    end
-    def posttext_params
-      params.require(:posttext).permit(:body)
+      params.require(:topic).permit(:title, :node_id, posttext_attributes: [:body])
     end
 end
