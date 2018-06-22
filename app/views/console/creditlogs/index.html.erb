@@ -16,9 +16,10 @@
 
   <tbody>
     <% @creditlogs.each do |creditlog| %>
+      <% creditlog_event = event_find_by(id: creditlog.eventlog.event_id) %>
       <tr>
         <td><%= creditlog.user_id %></td>
-        <td><%= "#{creditlog.event.description}:#{creditlog.eventlog.description}" %></td>
+        <td><%= "#{creditlog_event.description}:#{creditlog.eventlog.description}" %></td>
         <td><%= money_name(creditlog.currency) %></td>
         <td><%= money(creditlog.amount, creditlog.currency) %></td>
         <td><%= money(creditlog.balance, creditlog.currency) %></td>

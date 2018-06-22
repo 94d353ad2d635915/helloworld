@@ -10,18 +10,18 @@ class Console::RolesController < Console::ApplicationController
   # GET /roles
   # GET /roles.json
   def index
-    @roles = Role.all.includes(:user, :role)
+    @roles = @role_all.includes(:user)
   end
 
   # GET /roles/1
   # GET /roles/1.json
   def show
+    @role_root = role_find_by(id: @role.role_id)
   end
 
   # GET /roles/new
   def new
     @role = Role.new
-    @roles = Role.all
   end
 
   # GET /roles/1/edit
@@ -80,7 +80,7 @@ class Console::RolesController < Console::ApplicationController
     _delete = _current - _update
     # AssignPermissionsRole.where({
     #   permission_id: _delete, 
-    #   role_id: tree_child_ids(Role.all, @role.id)
+    #   role_id: tree_child_ids(@role_all, @role.id)
     # }).destroy_all#.map(&:destroy)
     role_child_ids = tree_child_ids(@roles, @role.id)
     @apr.each do |o|
@@ -156,9 +156,7 @@ class Console::RolesController < Console::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_role
-      @roles = Role.all
-      role_id = params[:id].to_i
-      @role = @roles.select{|o| o.id == role_id }.first
+      @role = role_find_by(id: params[:id])
       puts @role.id
       # @role = Role.find(params[:id])
     end
@@ -169,7 +167,7 @@ class Console::RolesController < Console::ApplicationController
     end
 
     def get_permissions
-      @permissions_all = Permission.all
+      @permissions_all = @permission_all
       @apr = AssignPermissionsRole.all
       if @role.role_id
         # @permissions = @apr.select{|o| o.role_id == @role.role_id}.map(&:permission_id)

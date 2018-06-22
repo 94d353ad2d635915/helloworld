@@ -4,12 +4,13 @@ class TopicsController < ApplicationController
   # GET /topics
   # GET /topics.json
   def index
-    @topics = Topic.all.includes(:user, :node)
+    @topics = Topic.all.includes(:user)
   end
 
   # GET /topics/1
   # GET /topics/1.json
   def show
+    @node = node_find(@topic.node_id)
     @comments = @topic.comments.includes(:posttext)
     @comment = @topic.comments.build
   end

@@ -8,8 +8,9 @@
       %th
   %tbody
     - @roles.each do |role|
+      - role_root = role_find_by(id: role.role_id)
       %tr
-        %td= role.role.name if role.role_id
+        %td= role_root.name if role_root
         %td= role.name
         %td= role.description
         %td= role.user.email

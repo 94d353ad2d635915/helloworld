@@ -4,7 +4,7 @@ module ApplicationHelper
     _html = "<ul class=tree>"
     tree.each do |menu|
       _html += "<li>"
-      _html += link_to_route(menu.permission, "<label>#{menu.name}</label>")
+      _html += link_to_route(permission_find(menu.permission_id), "<label>#{menu.name}</label>")
       _html += getMenuTree(menu.children) if menu.children
       _html += "</li>"
     end
@@ -18,7 +18,7 @@ module ApplicationHelper
       _html += "<li data-menu-id='#{menu.id}' data-priority='#{menu.priority}'>"
       _html += "<div>"
       _html += check_box_tag ''
-      _html += link_to_route(menu.permission, menu.name)
+      _html += link_to_route(permission_find(menu.permission_id), menu.name)
       _html += "<span>"
       _html += link_to 'Show', console_menu_path(menu)
       _html += link_to 'Edit', edit_console_menu_path(menu)

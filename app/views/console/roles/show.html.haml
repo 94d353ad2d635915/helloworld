@@ -1,6 +1,6 @@
 %p
   %strong Role:
-  = @roles.select{|o| o.id == @role.role_id }.first.name if @role.role_id
+  = @role_root.name if @role_root
 %p
   %strong Name:
   = @role.name

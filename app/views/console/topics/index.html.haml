@@ -7,9 +7,10 @@
       %th
   %tbody
     - @topics.each do |topic|
+      - node = node_find(topic.node_id)
       %tr
         %td= topic.title
-        %td= topic.node.name if topic.node
+        %td= node.name if node
         / %td= topic.posttext.body if topic.posttext
         %td= topic.user.email
         %td

@@ -4,7 +4,7 @@ class  Console::CreditsController <  Console::ApplicationController
   # GET /credits
   # GET /credits.json
   def index
-    @credits = Credit.all
+    @credits = Credit.all.includes(:user)
   end
 
   # GET /credits/1

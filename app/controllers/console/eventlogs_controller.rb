@@ -4,7 +4,7 @@ class Console::EventlogsController < Console::ApplicationController
   # GET /eventlogs
   # GET /eventlogs.json
   def index
-    @eventlogs = Eventlog.all.includes(:user, :event).order(created_at: :DESC)
+    @eventlogs = Eventlog.all.includes(:user).sort_by(&:created_at).reverse#.order(created_at: :DESC)
   end
 
   # GET /eventlogs/1

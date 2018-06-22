@@ -13,9 +13,10 @@
 
   <tbody>
     <% @topics.each do |topic| %>
+      <% node = node_find(topic.node_id) %>
       <tr>
         <td><%= link_to(topic.title, topic) %></td>
-        <td><%= link_to(topic.node.name, topic.node) if topic.node %></td>
+        <td><%= link_to(node.name, node) if node %></td>
         <td><%= topic.user.email %></td>
       </tr>
     <% end %>

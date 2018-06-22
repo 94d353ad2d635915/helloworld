@@ -1,14 +1,95 @@
 class AppController < ActionController::Base
-  helper_method :login?, :current_layout
+  before_action :global_init_all_cache
   after_action :creat_eventlog
 
+  helper_method :login?, :current_layout
+  
+  helper_method :node_find,  :node_find_by
+  helper_method :event_find, :event_find_by
+  helper_method :permission_find, :permission_find_by
+  helper_method :role_find, :role_find_by
+  helper_method :menu_find, :menu_find_by
+
+  def global_init_all_cache
+    # @@
+    @node_all ||= Node.all
+
+    @role_all    ||= Role.all
+    @user_role    ||= role_find_by(name: 'user')
+    @public_role  ||= role_find_by(name: 'public')
+
+    @permission_all    ||= Permission.all
+    @user_permissions   ||= (@user_role.presence ? @user_role.permissions : [])
+    @public_permissions ||= (@public_role.presence ? @public_role.permissions : [])
+    # @@assign_permissions_roles = 
+    # @@assign_roles_users =
+    @menu_all  ||= Menu.all
+    @event_all ||= Event.all
+  end
+
   private
+    def object_find_by_uniq(class_name, *options)
+      options = options.extract_options!
+      return nil if options.empty?
+      collection = self.instance_variable_get("@#{class_name}_all")
+      collection.select do |o|
+        result = true
+        options.each {|k,v| result = false if o.send(k).to_s != v.to_s }
+        result
+      end.first
+    end
+
+    # Role.find_by(name: 'user')
+    # @role_all.select{|o| o.id == role_id.to_i}.first
+    # @role_all.select{|o| o.name == role_name}.first
+    # @role_all.includes(:user)
+    # node/permission/role/menu/event
+    def node_find(node_id)
+      node_find_by(id: node_id)
+    end
+
+    def node_find_by(*options)
+      object_find_by_uniq('node', *options)
+    end
+
+    def permission_find(permission_id)
+      permission_find_by(id: permission_id)
+    end
+
+    def permission_find_by(*options)
+      object_find_by_uniq('permission', *options)
+    end
+
+    def role_find(role_id)
+      role_find_by(id: role_id)
+    end
+
+    def role_find_by(*options)
+      object_find_by_uniq('role', *options)
+    end
+
+    def menu_find(menu_id)
+      menu_find_by(id: menu_id)
+    end
+
+    def menu_find_by(*options)
+      object_find_by_uniq('menu', *options)
+    end
+
+    def event_find(event_id)
+      event_find_by(id: event_id)
+    end
+
+    def event_find_by(*options)
+      object_find_by_uniq('event', *options)
+    end
+
     def route_permission(route=nil)
       if route.nil?
         route = params.permit(:controller, :action).to_h
         route[:verb] = request.request_method
       end
-      permission = Permission.all.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
+      permission = @permission_all.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
 
       # puts "#"*2**7
       # puts route
@@ -20,7 +101,7 @@ class AppController < ActionController::Base
 
     def creat_eventlog(permission=route_permission)
       if login? and permission
-        event = Event.find_by(permission_id: permission.id)
+        event = event_find_by(permission_id: permission.id)#permission.event
         # puts response.to_a
         if event
           object = eval("@#{permission[:controller].gsub(/s$/,'')}")
@@ -64,11 +145,11 @@ class AppController < ActionController::Base
     end
     
     def is_public?
-      can?( Role.find_by(name: 'public') )
+      can?( @public_permissions )
     end
 
-    def can?(object=nil,route=nil)
-      return false unless object.presence
+    def can?(permissions=nil,route=nil)
+      return false unless permissions.presence
       # can?
       # can?(current_user)
       # can?(role_public)
@@ -81,11 +162,11 @@ class AppController < ActionController::Base
       # end
       # permission = object.permissions.uniq.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
       permission = route_permission(route)
-      permission ? object.permissions.ids.uniq.include?(permission.id) : false
+      permission ? permissions.ids.uniq.include?(permission.id) : false
     end
 
     def login?
-      current_user.presence
+      !current_user.nil?
     end
 
     def html_404

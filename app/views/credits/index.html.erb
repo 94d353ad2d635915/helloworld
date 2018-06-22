@@ -34,7 +34,7 @@
       <tr>
         <td><%= creditlog.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td><%= creditlog.eventlog.ip %></td>
-        <td><%= "#{creditlog.event.description}:#{creditlog.eventlog.description}" %></td>
+        <td><%= "#{event_find(creditlog.eventlog.event_id).description}:#{creditlog.eventlog.description}" %></td>
         <td><%= money_name(creditlog.currency) %></td>
         <td><%= money(creditlog.amount, creditlog.currency) %></td>
         <td><%= money(creditlog.balance, creditlog.currency) %></td>

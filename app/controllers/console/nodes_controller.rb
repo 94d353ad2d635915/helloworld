@@ -7,7 +7,7 @@ class  Console::NodesController <  Console::ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all.includes(:posttext, :node, :user)
+    @nodes = @node_all.includes(:posttext, :user)
   end
 
   # GET /nodes/1
@@ -67,7 +67,7 @@ class  Console::NodesController <  Console::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_node
-      @node = Node.find(params[:id])
+      @node = node_find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

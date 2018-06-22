@@ -7,12 +7,13 @@ class Console::TopicsController < Console::ApplicationController
   # GET /topics
   # GET /topics.json
   def index
-    @topics = Topic.all.includes(:user, :posttext, :node)
+    @topics = Topic.all.includes(:user, :posttext)
   end
 
   # GET /topics/1
   # GET /topics/1.json
   def show
+    @node = node_find(@topic.node_id)
     @comments = @topic.comments.includes(:posttext)
     @comment = @topic.comments.build
   end

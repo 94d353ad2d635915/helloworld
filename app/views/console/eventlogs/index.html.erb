@@ -17,12 +17,13 @@
 
   <tbody>
     <% @eventlogs.each do |eventlog| %>
+      <% eventlog_event = event_find_by(id: eventlog.event_id) %>
       <tr>
         <td><%= eventlog.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td><%= eventlog.ip %></td>
         <td><%= eventlog.user_agent %></td>
         <td><%= eventlog.user.email %></td>
-        <td><%= eventlog.event.description if eventlog.event%></td>
+        <td><%= eventlog_event.description if eventlog_event%></td>
         <td><%= eventlog.description %></td>
         <td><%= link_to 'Show', console_eventlog_path(eventlog) %></td>
         <td><%= link_to 'Destroy', console_eventlog_path(eventlog), method: :delete, data: { confirm: 'Are you sure?' } %></td>

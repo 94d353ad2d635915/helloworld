@@ -12,10 +12,9 @@
       %th event.amount
       %th operation
   %tbody.filter-list.events
-    - @permissions = Permission.all.includes(:event)
-    - @permissions.each do |permission|
+    - @permission_all.each do |permission|
       %tr
-        - event = permission.event
+        - event = event_find_by(permission_id: permission.id)#permission.event
         - event ||= Event.new
         = form_for [:console, event] do |form|
           / - puts event[:permission_id]
@@ -28,5 +27,5 @@
           %td= form.text_field :amount
           %td
             = form.button '保存'
-            = link_to('删除', console_event_path(event), method: :delete) if event.valid?
+            = link_to('删除', console_event_path(event), method: :delete) if event.id#event.valid?
 

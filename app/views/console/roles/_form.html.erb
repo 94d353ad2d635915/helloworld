@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :role_id %>
-    <%= form.select :role_id, @roles.collect{|role| [role.name, role.id]}, {include_blank: true} %>
+    <%= form.select :role_id, @role_all.collect{|role| [role.name, role.id]}, {include_blank: true} %>
   </div>
 
   <div class="field">

@@ -10,6 +10,8 @@ class Console::MenusController < Console::ApplicationController
   # GET /menus/1
   # GET /menus/1.json
   def show
+    @menu_root = menu_find(@menu.menu_id)
+    @menu_permission = permission_find(@menu.permission_id)
   end
 
   # GET /menus/new
@@ -67,7 +69,7 @@ class Console::MenusController < Console::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_menu
-      @menu = Menu.find(params[:id])
+      @menu = menu_find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -76,8 +78,9 @@ class Console::MenusController < Console::ApplicationController
     end
 
     def menus_permissions
-      @menus = Menu.all
-      @permissions = Role.find_by(name: 'menu').permissions#Permission.all
+      @menus = @menu_all
+      role = role_find_by(name: 'menu')
+      @permissions = role.permissions
         .where(verb: 'GET')
         .where.not(id: @menus.map(&:permission_id).compact.uniq - [@menu.permission_id])
       @menus = @menus.reject {|menu| menu.permission_id.presence }

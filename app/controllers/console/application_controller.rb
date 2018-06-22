@@ -12,7 +12,7 @@ class Console::ApplicationController < AppController
       # return authenticate_user! unless login?
       html_404 unless login?
       return true if current_user.id == 1
-      html_404 unless can?(current_user)
+      html_404 unless can?(current_user.permissions)
       true
     end
     # .empty?
@@ -22,9 +22,9 @@ class Console::ApplicationController < AppController
       # menusTree()
       # menusTree('Console')
       # menusTree('Console', current_user)
-      menus = Menu.all.includes(:menu, :user, :permission)
+      menus = @menu_all
       menu_start = { id: nil }
-      menu_class_name = menus.class.to_s.gsub(/::\S+/,'').downcase
+      # menu_class_name = menus.class.to_s.gsub(/::\S+/,'').downcase
 
       if menu_name.presence
         # menu_start = menus.select{|o| o.name == menu_name }.first#array[menu]

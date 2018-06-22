@@ -1,5 +1,4 @@
 class Console::PermissionsController < Console::ApplicationController
-  # Permission.all.each { |r| r.destroy }
   def index
     permissions_params = params.permit(:rails, :all, :raw)
     if params.include? :raw
@@ -10,7 +9,7 @@ class Console::PermissionsController < Console::ApplicationController
     # create if @permissions.empty?
     # .empty / .size  one more sql
     # Permission Exists (0.3ms)  SELECT  1 AS one FROM "permissions" LIMIT ?  [["LIMIT", 1]]
-    @permissions = Permission.all.order(priority: :ASC)
+    @permissions = @permission_all.sort_by(&:priority)#.order(priority: :ASC)
     init if @permissions.length < 1
 
     permissions_controllers_default = ['rails/info', 'rails/mailers', nil, 'rails/welcome']
@@ -22,7 +21,7 @@ class Console::PermissionsController < Console::ApplicationController
       #@permissions.reject! { |permission| permissions_controllers_default.include?(permission[:controller]) }
       @permissions = Permission.where(controller: permissions_controllers_default).order(priority: :ASC)
     elsif params.include? :all
-      @permissions ||= Permission.all.order(priority: :ASC)
+      @permissions ||= @permission_all.sort_by(&:priority)
     end
   end
 
@@ -135,10 +134,11 @@ class Console::PermissionsController < Console::ApplicationController
     end
 
     def clear
-      Permission.all.each { |permission| permission.destroy }
+      Permission.all.destroy_all
     end
 
     def init
+      @permission_all = nil
       routes_map.each do |route, priority| 
         Permission.create(route.merge! priority) 
       end
