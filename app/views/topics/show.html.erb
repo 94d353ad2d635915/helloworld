@@ -28,7 +28,7 @@
   </thead>
 
   <tbody>
-    <% cache @comments do %>
+    <% cache [@comments.last, @comments.size] do %>
     <% @comments.each do |comment| %>
       <% cache comment do %>
       <tr>

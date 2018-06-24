@@ -11,9 +11,10 @@ class CommentsController < ApplicationController
         format.html { redirect_to @topic, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @topic }
       else
-        @comments = @topic.comments.includes(:posttext)
-        format.html { render 'topics/show'  }
-        format.json { render json: @topic.errors, status: :unprocessable_entity }
+        format.html { redirect_to @topic, notice: 'Comment was not successfully created.' }
+        # @comments = @topic.comments.includes(:posttext)
+        # format.html { render 'topics/show'  }
+        # format.json { render json: @topic.errors, status: :unprocessable_entity }
       end
     end
   end
