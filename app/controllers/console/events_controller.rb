@@ -4,7 +4,6 @@ class Console::EventsController < Console::ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = @event_all
   end
 
   # GET /events/1

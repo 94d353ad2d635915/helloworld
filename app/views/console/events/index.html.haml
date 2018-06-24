@@ -12,7 +12,7 @@
       %th event.amount
       %th operation
   %tbody.filter-list.events
-    - @permission_all.each do |permission|
+    - @Permission_all.each do |permission|
       %tr
         - event = event_find_by(permission_id: permission.id)#permission.event
         - event ||= Event.new

@@ -6,5 +6,5 @@ class Permission < ApplicationRecord
   has_many :roles, through: :assign_permissions_roles
   has_one :event, dependent: :nullify#操作删除，事件保留，保留日志
 
-  after_commit {Rails.cache.delete("#{self.class}_all")}
+  after_commit {Rails.cache.delete_matched("#{self.class}*")}
 end

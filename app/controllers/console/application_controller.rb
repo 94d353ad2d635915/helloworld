@@ -10,10 +10,7 @@ class Console::ApplicationController < AppController
 
     def canConsole?
       # return authenticate_user! unless login?
-      html_404 unless login?
-      return true if current_user.id == 1
-      html_404 unless can?(current_user.permissions)
-      true
+      html_404 unless has_right_todo?
     end
     # .empty?
     # not shown goto console url
@@ -22,7 +19,7 @@ class Console::ApplicationController < AppController
       # menusTree()
       # menusTree('Console')
       # menusTree('Console', current_user)
-      menus = @menu_all
+      menus = @Menu_all
       menu_start = { id: nil }
       # menu_class_name = menus.class.to_s.gsub(/::\S+/,'').downcase
 

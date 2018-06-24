@@ -11,22 +11,136 @@ class AppController < ActionController::Base
   helper_method :menu_find, :menu_find_by
 
   private
+    def has_right_todo?
+      @current_permission = nil
+      @current_event = nil
+      @current_credits = nil
+      return nil unless login?
+
+      @current_permission = (current_user.id == 1) ? route_permission : can?(@user_permissions)
+      @current_event = @current_permission ? event_find_by(permission_id: @current_permission.id) : nil
+      if @current_event and @current_event.currency and @current_event.amount != 0
+        @current_credits = current_user.credits.select{|o| o.currency == @current_event.currency }.first
+
+        # unless user_credit
+        #   user_credit = current_user.credits.build(currency: event.currency, balance: 0)
+        # end
+        if !@current_credits or ( @current_credits.balance + @current_event.amount ) < 0
+          notice = "
+            该操作需要消耗：#{@current_event.amount} #{@current_event.currency}，
+            你没有足够的“#{@current_event.currency}”，请充值后进行该项操作。"
+          respond_to do |format|
+            # :back
+            # fallback_location: root_path
+            # session[:return_to] ||= request.referer
+            # redirect_to session.delete(:return_to)
+            # request.env['HTTP_REFERER']
+            format.html { redirect_to request.referer, notice: notice }
+          end
+        end
+      end
+      @current_permission
+    end
+
+    # return permission or nil
+    def can?(permissions=nil,route=nil)
+      return false unless permissions.presence
+      # can?
+      # can?(current_user.permissions)
+      # can?(role_public.permissions)
+      # can?(role_user.permissions)
+      #object = login? ? current_user : Role.find_by(name: 'public'))
+
+      # if route.nil?
+      #   route = params.permit(:controller, :action).to_h
+      #   route[:verb] = request.request_method
+      # end
+      # permission = object.permissions.uniq.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
+      permission = route_permission(route)
+      if permission and permissions.map(&:id).uniq.include?(permission.id)
+        return permission
+      else
+        return nil
+      end
+    end
+
+    def route_permission(route=nil)
+      if route.nil?
+        route = params.permit(:controller, :action).to_h
+        route[:verb] = request.request_method
+      end
+      permission = @Permission_all.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
+
+      # puts "#"*2**7
+      # puts route
+      # puts permission.size
+      # puts "#"*2**7
+
+      permission.empty? ? nil : permission.first
+    end
+
+    def creat_eventlog
+      # puts response.to_a
+      if @current_event
+        object = eval("@#{@current_permission[:controller].gsub(/s$/,'')}")
+        return if object.id.nil?
+
+        eventlog             = current_user.eventlogs.build
+        eventlog.ip          = request.remote_ip
+        eventlog.user_agent  = request.user_agent
+        eventlog.event       = @current_event
+        eventlog.description = object.id
+        eventlog.save
+
+        creat_creditlog( @current_event, eventlog )
+      end
+    end
+
+    def creat_creditlog(event,eventlog=nil)
+      if @current_credits
+        @current_credits.balance += event.amount
+        @current_credits.save
+
+        creditlog = current_user.creditlogs.build
+        creditlog.eventlog = eventlog
+        creditlog.currency = event.currency
+        creditlog.amount = event.amount
+        creditlog.balance = @current_credits.balance
+        creditlog.save
+      end
+    end
+
+    def current_layout
+    end
+    
+    def is_public?
+      can?( @public_permissions )
+    end
+
+    def login?
+      !current_user.nil?
+    end
+
+    def html_404
+      raise ActionController::RoutingError.new('Not Found') 
+    end
+
     def global_init_all_cache
       # @@
-      @node_all ||= _caches(Node, 'all')
+      @Node_all ||= _caches(Node, 'all')
 
       # Rails.cache.delete "articles"
-      @role_all    ||= _caches(Role, 'all')
+      @Role_all    ||= _caches(Role, 'all')
       @user_role    ||= role_find_by(name: 'user')
       @public_role  ||= role_find_by(name: 'public')
 
-      @permission_all    ||= _caches(Permission, 'all')
+      @Permission_all    ||= _caches(Permission, 'all')
       @user_permissions   ||= _caches(@user_role, "permissions")
       @public_permissions ||= _caches(@public_role, "permissions")
       # @@assign_permissions_roles = 
       # @@assign_roles_users =
-      @menu_all  ||= _caches(Menu, 'all')
-      @event_all ||= _caches(Event, 'all')
+      @Menu_all  ||= _caches(Menu, 'all')
+      @Event_all ||= _caches(Event, 'all')
     end
 
     # 
@@ -80,7 +194,7 @@ class AppController < ActionController::Base
     end
 
     def node_find_by(*options)
-      object_find_by_uniq('node', *options)
+      object_find_by_uniq('Node', *options)
     end
 
     def permission_find(permission_id)
@@ -88,7 +202,7 @@ class AppController < ActionController::Base
     end
 
     def permission_find_by(*options)
-      object_find_by_uniq('permission', *options)
+      object_find_by_uniq('Permission', *options)
     end
 
     def role_find(role_id)
@@ -96,7 +210,7 @@ class AppController < ActionController::Base
     end
 
     def role_find_by(*options)
-      object_find_by_uniq('role', *options)
+      object_find_by_uniq('Role', *options)
     end
 
     def menu_find(menu_id)
@@ -104,7 +218,7 @@ class AppController < ActionController::Base
     end
 
     def menu_find_by(*options)
-      object_find_by_uniq('menu', *options)
+      object_find_by_uniq('Menu', *options)
     end
 
     def event_find(event_id)
@@ -112,96 +226,7 @@ class AppController < ActionController::Base
     end
 
     def event_find_by(*options)
-      object_find_by_uniq('event', *options)
-    end
-
-    def route_permission(route=nil)
-      if route.nil?
-        route = params.permit(:controller, :action).to_h
-        route[:verb] = request.request_method
-      end
-      permission = @permission_all.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
-
-      # puts "#"*2**7
-      # puts route
-      # puts permission.size
-      # puts "#"*2**7
-
-      permission.empty? ? nil : permission.first
-    end
-
-    def creat_eventlog(permission=route_permission)
-      if login? and permission
-        event = event_find_by(permission_id: permission.id)#permission.event
-        # puts response.to_a
-        if event
-          object = eval("@#{permission[:controller].gsub(/s$/,'')}")
-          return if object.id.nil?
-          eventlog = current_user.eventlogs.build
-          eventlog.ip = request.remote_ip
-          eventlog.user_agent = request.user_agent
-          eventlog.event = event
-          eventlog.description = object.id
-          eventlog.save
-          creat_creditlog(event,eventlog)
-        end
-      end
-    end
-
-    def creat_creditlog(event,eventlog=nil)
-      if login? and eventlog and event.currency and event.amount != 0
-        user_credit = current_user.credits.select{|o| o.currency == event.currency }.first
-        unless user_credit
-          user_credit = current_user.credits.build(currency: event.currency, balance: 0)
-        end
-        if !user_credit.valid? or (user_credit.balance += event.amount) < 0
-          # respond_to do |format|
-            notice = "该操作需要消耗：#{event.amount} #{event.currency}，你没有足够的“#{event.currency}”，请充值后进行该项操作。"
-            # format.html { redirect_to root_path, notice: notice }
-          # end
-          return
-        end
-        user_credit.save
-
-        creditlog = current_user.creditlogs.build
-        creditlog.eventlog = eventlog
-        creditlog.currency = event.currency
-        creditlog.amount = event.amount
-        creditlog.balance = user_credit.balance
-        creditlog.save
-      end
-    end
-
-    def current_layout
-    end
-    
-    def is_public?
-      can?( @public_permissions )
-    end
-
-    def can?(permissions=nil,route=nil)
-      return false unless permissions.presence
-      # can?
-      # can?(current_user)
-      # can?(role_public)
-      # can?(role_user)
-      #object = login? ? current_user : Role.find_by(name: 'public'))
-
-      # if route.nil?
-      #   route = params.permit(:controller, :action).to_h
-      #   route[:verb] = request.request_method
-      # end
-      # permission = object.permissions.uniq.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
-      permission = route_permission(route)
-      permission ? permissions.map(&:id).uniq.include?(permission.id) : false
-    end
-
-    def login?
-      !current_user.nil?
-    end
-
-    def html_404
-      raise ActionController::RoutingError.new('Not Found') 
+      object_find_by_uniq('Event', *options)
     end
 
     def update_posttext(object, params)

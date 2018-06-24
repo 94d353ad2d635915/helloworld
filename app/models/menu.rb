@@ -9,5 +9,5 @@ class Menu < ApplicationRecord
   attribute :children
 
   second_level_cache expires_in: 90.seconds
-  after_commit {Rails.cache.delete("#{self.class}_all")}
+  after_commit {Rails.cache.delete_matched("#{self.class}*")}
 end

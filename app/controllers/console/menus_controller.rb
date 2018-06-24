@@ -78,7 +78,7 @@ class Console::MenusController < Console::ApplicationController
     end
 
     def menus_permissions
-      @menus = @menu_all
+      @menus = @Menu_all
       role = role_find_by(name: 'menu')
       @permissions = role.permissions
         .where(verb: 'GET')

@@ -80,7 +80,7 @@ class Console::RolesController < Console::ApplicationController
     _delete = _current - _update
     # AssignPermissionsRole.where({
     #   permission_id: _delete, 
-    #   role_id: tree_child_ids(@role_all, @role.id)
+    #   role_id: tree_child_ids(@Role_all, @role.id)
     # }).destroy_all#.map(&:destroy)
     role_child_ids = tree_child_ids(@roles, @role.id)
     @apr.each do |o|
@@ -167,7 +167,7 @@ class Console::RolesController < Console::ApplicationController
     end
 
     def get_permissions
-      @permissions_all = @permission_all
+      @permissions_all = @Permission_all
       @apr = AssignPermissionsRole.all
       if @role.role_id
         # @permissions = @apr.select{|o| o.role_id == @role.role_id}.map(&:permission_id)

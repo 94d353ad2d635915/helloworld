@@ -7,7 +7,7 @@
       %th User
       %th
   %tbody
-    - @role_all.each do |role|
+    - @Role_all.each do |role|
       - role_root = role_find_by(id: role.role_id)
       %tr
         %td= role_root.name if role_root

@@ -1,23 +1,14 @@
 class ApplicationController < AppController
-  before_action :canUser?
+  before_action :cancan?
   helper_method :canLink?
 
   private
     def cancan?
       # can? 默认是否为公开权限
       # 若不是，则登录
-      if login?
-        return true if current_user.id == 1
-        return true if can?(@user_permissions)
-      else
-        return true if is_public?
-        authenticate_user! unless login?
-      end
-      false
-    end
-
-    def canUser?
-      html_404 unless cancan?
+      return true if has_right_todo? or is_public?
+      return authenticate_user! unless login?
+      html_404
     end
 
     def canLink?(route)

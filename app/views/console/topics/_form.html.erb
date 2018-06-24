@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= form.label :node_id %>
-    <%= form.select :node_id, @node_all.collect{|node| [node.name, node.id]}, {include_blank: true} %>
+    <%= form.select :node_id, @Node_all.collect{|node| [node.name, node.id]}, {include_blank: true} %>
   </div>
 
   <div class="field">

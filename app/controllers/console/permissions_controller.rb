@@ -9,7 +9,7 @@ class Console::PermissionsController < Console::ApplicationController
     # create if @permissions.empty?
     # .empty / .size  one more sql
     # Permission Exists (0.3ms)  SELECT  1 AS one FROM "permissions" LIMIT ?  [["LIMIT", 1]]
-    @permissions = @permission_all.sort_by(&:priority)#.order(priority: :ASC)
+    @permissions = @Permission_all.sort_by(&:priority)#.order(priority: :ASC)
     init if @permissions.length < 1
 
     permissions_controllers_default = ['rails/info', 'rails/mailers', nil, 'rails/welcome']
@@ -21,7 +21,7 @@ class Console::PermissionsController < Console::ApplicationController
       #@permissions.reject! { |permission| permissions_controllers_default.include?(permission[:controller]) }
       @permissions = Permission.where(controller: permissions_controllers_default).order(priority: :ASC)
     elsif params.include? :all
-      @permissions ||= @permission_all.sort_by(&:priority)
+      @permissions ||= @Permission_all.sort_by(&:priority)
     end
   end
 
@@ -48,7 +48,7 @@ class Console::PermissionsController < Console::ApplicationController
     def updates
       i = 0
       permissions_db = {}
-      @permissions = @permission_all
+      @permissions = @Permission_all
       @permissions.each do |permission|
         result = {
           { # 3点唯一
@@ -138,7 +138,7 @@ class Console::PermissionsController < Console::ApplicationController
     end
 
     def init
-      @permission_all = nil
+      @Permission_all = nil
       routes_map.each do |route, priority| 
         Permission.create(route.merge! priority) 
       end

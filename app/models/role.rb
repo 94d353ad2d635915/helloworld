@@ -17,5 +17,5 @@ class Role < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
 
-  after_commit {Rails.cache.delete("#{self.class}_all")}
+  after_commit {Rails.cache.delete_matched("#{self.class}*")}
 end

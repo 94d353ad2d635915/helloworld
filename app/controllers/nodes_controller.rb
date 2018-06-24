@@ -4,7 +4,7 @@ class NodesController < ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = @node_all.includes(:posttext, :node, :user)
+    @nodes = @Node_all.includes(:posttext, :node, :user)
   end
 
   # GET /nodes/1
