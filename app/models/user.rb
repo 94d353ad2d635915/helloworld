@@ -21,4 +21,6 @@ class User < ApplicationRecord
   has_many :credits
   has_many :creditlogs
   has_many :notifications
+
+  second_level_cache expires_in: 90.seconds
 end

@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<% cache [@topic, @topic.updated_at] do %>
 <p>
   <strong>Title:</strong>
   <%= @topic.title %>
@@ -10,14 +10,16 @@
 </p>
 
 <p>
-  <strong>Body:</strong>
-  <%= @topic.posttext.body if @topic.posttext %>
-</p>
-
-<p>
   <strong>User:</strong>
   <%= @topic.user %>
 </p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @topic.posttext.body if @topic.posttext %>
+</p>
+<% end %>
+
 <table>
   <thead>
     <tr>
@@ -26,14 +28,18 @@
   </thead>
 
   <tbody>
+    <% cache @comments do %>
     <% @comments.each do |comment| %>
+      <% cache comment do %>
       <tr>
         <td><%= comment.posttext.body if comment.posttext %></td>
-      </tr>
+      </tr><% end %>
+    <% end %>
     <% end %>
   </tbody>
 </table>
+<% cache [@topic, @comment] do %>
 <%= render('comments/form', comment: @comment) if login? %>
-
+<% end %>
 <%= link_to 'Edit', edit_topic_path(@topic) %> |
 <%= link_to 'Back', topics_path %>

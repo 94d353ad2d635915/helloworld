@@ -32,3 +32,4 @@
 
 <%= link_to 'Edit', edit_console_menu_path(@menu) %> |
 <%= link_to 'Back', console_menus_path %>
+<%= link_to 'Destroy', console_menu_path(@menu), method: :delete, data: { confirm: 'Are you sure?' } %>

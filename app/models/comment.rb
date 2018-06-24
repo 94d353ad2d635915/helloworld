@@ -14,4 +14,6 @@ class Comment < ApplicationRecord
       second_notifiable: self
     ) if self.topic.user_id != self.user_id
   end
+
+  second_level_cache expires_in: 90.seconds
 end

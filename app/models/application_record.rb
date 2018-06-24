@@ -10,4 +10,7 @@ class ApplicationRecord < ActiveRecord::Base
     end
     attributes_empty
   end
+
+  # for: [Menu,Node,Permission,Event,Role] _all
+  # after_commit {Rails.cache.delete("#{self.class}_all")}
 end

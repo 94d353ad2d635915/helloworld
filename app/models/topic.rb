@@ -5,4 +5,6 @@ class Topic < ApplicationRecord
   has_many :comments, dependent: :destroy
   belongs_to :node
   validates :title, :node_id, presence: true
+
+  second_level_cache expires_in: 90.seconds
 end

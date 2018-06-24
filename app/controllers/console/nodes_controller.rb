@@ -7,7 +7,7 @@ class  Console::NodesController <  Console::ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = @node_all.includes(:posttext, :user)
+    @nodes = Node.all.includes(:posttext, :user)
   end
 
   # GET /nodes/1

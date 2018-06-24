@@ -22,7 +22,6 @@ module ApplicationHelper
       _html += "<span>"
       _html += link_to 'Show', console_menu_path(menu)
       _html += link_to 'Edit', edit_console_menu_path(menu)
-      _html += link_to 'Destroy', console_menu_path(menu), method: :delete, data: { confirm: 'Are you sure?' }
       _html += "</span>"
       _html += "</div>"
       _html += getMenuTreeIndex(menu.children) if menu.children

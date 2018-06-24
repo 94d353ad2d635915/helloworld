@@ -10,13 +10,13 @@ class Console::RolesController < Console::ApplicationController
   # GET /roles
   # GET /roles.json
   def index
-    @roles = @role_all.includes(:user)
+    Role.all.includes(:user)
   end
 
   # GET /roles/1
   # GET /roles/1.json
   def show
-    @role_root = role_find_by(id: @role.role_id)
+    @role_root = Role.find_by(id: @role.role_id)
   end
 
   # GET /roles/new

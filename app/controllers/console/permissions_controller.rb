@@ -48,7 +48,7 @@ class Console::PermissionsController < Console::ApplicationController
     def updates
       i = 0
       permissions_db = {}
-      @permissions = Permission.all
+      @permissions = @permission_all
       @permissions.each do |permission|
         result = {
           { # 3点唯一
@@ -76,7 +76,7 @@ class Console::PermissionsController < Console::ApplicationController
           # if route is not exsit.
           if routes_map[route] != permissions_db[route]
             # priority is not same
-            Permission.where(route).update(priority)
+            permission_find_by(route).update(priority)# Permission.where(route).update(priority)
             # @permissions.select do |permission|
             #   result = {
             #     verb: permission[:verb], 
@@ -101,7 +101,7 @@ class Console::PermissionsController < Console::ApplicationController
         end
       end
       permissions_db_keys.each do |route|
-        Permission.find_by(route).destroy
+        permission_find_by(route).destroy
         # @permissions.select do |permission|
         #   result = {
         #     verb: permission[:verb], 

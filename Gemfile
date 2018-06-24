@@ -65,3 +65,7 @@ gem 'devise'
 gem 'haml'
 gem 'bootstrap', '~> 4.1', '>= 4.1.1'
 gem 'jquery-rails'
+
+gem 'redis'
+gem 'hiredis'
+gem "second_level_cache"

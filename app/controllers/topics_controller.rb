@@ -4,14 +4,14 @@ class TopicsController < ApplicationController
   # GET /topics
   # GET /topics.json
   def index
-    @topics = Topic.all.includes(:user)
+    @topics = Rails.cache.fetch("topic_index") { Topic.all.includes(:user).to_a }
   end
 
   # GET /topics/1
   # GET /topics/1.json
   def show
     @node = node_find(@topic.node_id)
-    @comments = @topic.comments.includes(:posttext)
+    @comments = Rails.cache.fetch("topic_#{@topic.id}_comments") { @topic.comments.includes(:posttext).to_a }
     @comment = @topic.comments.build
   end
 
@@ -30,6 +30,7 @@ class TopicsController < ApplicationController
     @topic = current_user.topics.build(topic_params)
     respond_to do |format|
       if @topic.save
+        Rails.cache.delete("topic_index")
         format.html { redirect_to @topic, notice: 'Topic was successfully created.' }
         format.json { render :show, status: :created, location: @topic }
       else
@@ -43,7 +44,9 @@ class TopicsController < ApplicationController
   # PATCH/PUT /topics/1.json
   def update
     respond_to do |format|
-      if @topic.update(topic_params)
+      _topic_params = (topic_params).merge({updated_at:Time.now})
+      # puts _topic_params
+      if @topic.update(_topic_params)
         format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
         format.json { render :show, status: :ok, location: @topic }
       else

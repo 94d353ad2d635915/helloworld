@@ -10,33 +10,64 @@ class AppController < ActionController::Base
   helper_method :role_find, :role_find_by
   helper_method :menu_find, :menu_find_by
 
-  def global_init_all_cache
-    # @@
-    @node_all ||= Node.all
-
-    @role_all    ||= Role.all
-    @user_role    ||= role_find_by(name: 'user')
-    @public_role  ||= role_find_by(name: 'public')
-
-    @permission_all    ||= Permission.all
-    @user_permissions   ||= (@user_role.presence ? @user_role.permissions : [])
-    @public_permissions ||= (@public_role.presence ? @public_role.permissions : [])
-    # @@assign_permissions_roles = 
-    # @@assign_roles_users =
-    @menu_all  ||= Menu.all
-    @event_all ||= Event.all
-  end
-
   private
+    def global_init_all_cache
+      # @@
+      @node_all ||= _caches(Node, 'all')
+
+      # Rails.cache.delete "articles"
+      @role_all    ||= _caches(Role, 'all')
+      @user_role    ||= role_find_by(name: 'user')
+      @public_role  ||= role_find_by(name: 'public')
+
+      @permission_all    ||= _caches(Permission, 'all')
+      @user_permissions   ||= _caches(@user_role, "permissions")
+      @public_permissions ||= _caches(@public_role, "permissions")
+      # @@assign_permissions_roles = 
+      # @@assign_roles_users =
+      @menu_all  ||= _caches(Menu, 'all')
+      @event_all ||= _caches(Event, 'all')
+    end
+
+    # 
+    # cache reslult is a array, not ActiveRecord_Relation
+    # 
+    # below is [x] not supported: 
+    # 
+    # => Topic.all.includes(:user)
+    # => Node.all.includes(:user)
+    # => @node_all.includes(:user)
+    # 
+    # supported: 
+    # 
+    # object : user
+    # association : topics, get topics by user_id
+    # example: 
+    # => user.topics          object_associations(user, 'topics')   cache_key: user_<id>_topics
+    # => User.all             object_associations(User, 'all')      cache_key: User_all
+    def fetch_object_associations(object, associations)
+      if object.class.to_s == 'Class'
+        cache_key = "#{object.to_s}_#{associations}"
+      else 
+        cache_key = "#{object.class.name}_#{object.id}_#{associations}"
+      end
+      Rails.cache.fetch(cache_key) { object.send(associations).to_a }
+    end
+    alias _caches fetch_object_associations
+
     def object_find_by_uniq(class_name, *options)
       options = options.extract_options!
-      return nil if options.empty?
-      collection = self.instance_variable_get("@#{class_name}_all")
-      collection.select do |o|
-        result = true
-        options.each {|k,v| result = false if o.send(k).to_s != v.to_s }
-        result
-      end.first
+      return nil if options.empty? or options.values.join.empty?
+      cache_key = "#{class_name}_#{options.flatten.join}"
+      # puts cache_key
+      Rails.cache.fetch(cache_key) do
+        collection = self.instance_variable_get("@#{class_name}_all")
+        collection.select do |o|
+          result = true
+          options.each {|k,v| result = false if o.send(k).to_s != v.to_s}
+          result
+        end.first
+      end
     end
 
     # Role.find_by(name: 'user')
@@ -162,7 +193,7 @@ class AppController < ActionController::Base
       # end
       # permission = object.permissions.uniq.select{|o| route.eql?( o.slice(:controller, :action, :verb) )}
       permission = route_permission(route)
-      permission ? permissions.ids.uniq.include?(permission.id) : false
+      permission ? permissions.map(&:id).uniq.include?(permission.id) : false
     end
 
     def login?
@@ -191,7 +222,7 @@ class AppController < ActionController::Base
 
     def tree_child_ids(objects=nil, tree_ids=[])
       tree_ids = [tree_ids] if tree_ids.class != Array
-      object_class_name = objects.class.to_s.gsub(/::\S+/,'').downcase
+      object_class_name = objects.first.class.name.downcase
       _tree_ids = objects.select{ |object| tree_ids.include?( object.send("#{object_class_name}_id") ) }.map(&:id)
       _tree_ids = tree_child_ids(objects, _tree_ids) unless _tree_ids.empty?
       tree_ids + _tree_ids
@@ -207,7 +238,7 @@ class AppController < ActionController::Base
 
     def tree_parent_ids(objects=nil, tree_ids=[])
       tree_ids = [tree_ids] if tree_ids.class != Array
-      object_class_name = objects.class.to_s.gsub(/::\S+/,'').downcase
+      object_class_name = objects.first.class.name.downcase
       _tree_ids = objects.select{ |object| tree_ids.include?( object.id ) }.map(&("#{object_class_name}_id").to_sym)
       _tree_ids = tree_parent_ids(objects, _tree_ids) unless _tree_ids.empty?
       (tree_ids + _tree_ids).uniq
@@ -217,7 +248,7 @@ class AppController < ActionController::Base
       # @permissions = @apr.select{|o| o.role_id == @role.role_id}.map(&:permission_id)
       # @permissions = @permissions_all.select{|o| @permissions.include? o.id}
       which_id = "#{which_object.class.name.downcase}_id"
-      target_id = "#{target_objects.class.to_s.gsub(/::\S+/,'').downcase}_id"
+      target_id = "#{target_objects.first.class.name.downcase}_id"
 
       _ids = many_to_many_objects.select do |o|
         o.send(which_id) == which_object.send(which_id)
