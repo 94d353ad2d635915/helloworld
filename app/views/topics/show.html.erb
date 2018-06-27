@@ -39,9 +39,7 @@
   </tbody>
 </table>
 <% if login? %>
-  <% cache [@topic, @comment] do %>
     <%= render('comments/form', comment: @comment) %>
-  <% end %>
 <% end %>
 <%= link_to 'Edit', edit_topic_path(@topic) %> |
 <%= link_to 'Back', topics_path %>

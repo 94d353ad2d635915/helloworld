@@ -13,7 +13,7 @@ class ApplicationController < AppController
 
     def canLink?(route)
       if login?
-        return true if current_user.id == 1
+        return true if root?
         return true if can?(@user_permissions, route)
       else
         return true if can?(@public_permissions, route)

@@ -28,7 +28,7 @@ class Console::ApplicationController < AppController
         menu_start = menus.select{|o| o.name == menu_name }.first
         menus = tree_child(menus, menu_start)
 
-        if current_user.presence && current_user.id != 1
+        if current_user.presence && !root?
           permissions = current_user.permissions.ids.uniq 
           menus_member = menus.select{|o| permissions.include?(o.permission_id)}
           menus_group_ids = menus_member.map(&:menu_id).uniq

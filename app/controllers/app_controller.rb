@@ -17,7 +17,7 @@ class AppController < ActionController::Base
       @current_credits = nil
       return nil unless login?
 
-      @current_permission = (current_user.id == 1) ? route_permission : can?(@user_permissions)
+      @current_permission = root? ? route_permission : can?(@user_permissions)
       @current_event = @current_permission ? event_find_by(permission_id: @current_permission.id) : nil
       if @current_event and @current_event.currency and @current_event.amount != 0
         @current_credits = current_user.credits.select{|o| o.currency == @current_event.currency }.first
@@ -92,7 +92,7 @@ class AppController < ActionController::Base
         eventlog.description = object.id
         eventlog.save
 
-        creat_creditlog( @current_event, eventlog )
+        creat_creditlog( @current_event, eventlog ) unless root?
       end
     end
 
@@ -119,6 +119,10 @@ class AppController < ActionController::Base
 
     def login?
       !current_user.nil?
+    end
+
+    def root?
+      current_user.id == 1
     end
 
     def html_404
