@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        Rails.cache.delete("topic_#{@topic.id}_comments")
+        Rails.cache.delete("Topic:#{@topic.id}_comments")
         format.html { redirect_to @topic, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @topic }
       else
