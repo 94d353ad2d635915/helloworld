@@ -40,6 +40,6 @@ end
 CURRENCIES = {
   'USD' => {symbol: '$', name: '美元'},
   'CNY' => {symbol: '¥', name: '人民币'},
-  'POINTS' => {symbol: '', name: '积分'},
-  'BITCOIN' => {symbol: '₿', name: '比特币'},
+  'POINT' => {symbol: '', name: '积分'},
+  'BTC' => {symbol: '₿', name: '比特币'},
 }

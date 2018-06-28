@@ -1,5 +1,5 @@
 class  Console::CreditsController <  Console::ApplicationController
-  before_action :set_credit, only: [:show, :edit, :update, :destroy]
+  before_action :set_credit, only: [:show, :charge, :update, :destroy]
 
   # GET /credits
   # GET /credits.json
@@ -9,16 +9,17 @@ class  Console::CreditsController <  Console::ApplicationController
 
   # GET /credits/1
   # GET /credits/1.json
-  def show
-  end
-
-  # GET /credits/new
   def new
     @credit = Credit.new
   end
 
+  # GET /credits/1
+  # GET /credits/1.json
+  def show
+  end
+
   # GET /credits/1/edit
-  def edit
+  def charge
   end
 
   # POST /credits
@@ -40,12 +41,13 @@ class  Console::CreditsController <  Console::ApplicationController
   # PATCH/PUT /credits/1
   # PATCH/PUT /credits/1.json
   def update
+    credit_params.each{ |k,v| @credit.increment(k,v.to_i) }
     respond_to do |format|
-      if @credit.update(credit_params)
+      if @credit.save
         format.html { redirect_to console_credit_path(@credit), notice: 'Credit was successfully updated.' }
         format.json { render :show, status: :ok, location: console_credit_path(@credit) }
       else
-        format.html { render :edit }
+        format.html { render :charge }
         format.json { render json: @credit.errors, status: :unprocessable_entity }
       end
     end
@@ -54,7 +56,10 @@ class  Console::CreditsController <  Console::ApplicationController
   # DELETE /credits/1
   # DELETE /credits/1.json
   def destroy
-    @credit.destroy
+    currencies = CURRENCIES.keys
+    @credit.attributes.each{|k,v| @credit[k] = 0 if currencies.include? k }
+    @credit.save
+    # @credit.destroy
     respond_to do |format|
       format.html { redirect_to console_credits_url, notice: 'Credit was successfully destroyed.' }
       format.json { head :no_content }
@@ -64,11 +69,11 @@ class  Console::CreditsController <  Console::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_credit
-      @credit = Credit.find(params[:id])
+      @credit = Credit.find_by(user_id: params[:user_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def credit_params
-      params.require(:credit).permit(:currency, :balance)
+      params.require(:credit).permit(:POINT, :CNY, :BTC, :USD)
     end
 end

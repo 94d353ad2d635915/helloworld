@@ -1,19 +1,28 @@
-<p id="notice"><%= notice %></p>
-
 <p>
+  <%= link_to 'Back', console_credits_path %>
+  
   <strong>User:</strong>
   <%= @credit.user.email %>
+
+  <%= link_to 'charge', charge_console_credit_path(@credit) %>
 </p>
 
-<p>
-  <strong>Currency:</strong>
-  <%= @credit.currency %>
-</p>
+<table>
+  <thead>
+    <tr>
+      <th><%= money_name('POINT') %></th>
+      <th><%= money_name('CNY') %></th>
+      <th><%= money_name('BTC') %></th>
+      <th><%= money_name('USD') %></th>
+    </tr>
+  </thead>
 
-<p>
-  <strong>Balance:</strong>
-  <%= @credit.balance %>
-</p>
-
-<%= link_to 'Edit', edit_console_credit_path(@credit) %> |
-<%= link_to 'Back', console_credits_path %>
+  <tbody>
+      <tr>
+        <td><%= money(@credit.POINT, 'POINT') %></td>
+        <td><%= money(@credit.CNY, 'CNY') %></td>
+        <td><%= money(@credit.BTC, 'BTC') %></td>
+        <td><%= money(@credit.USD, 'USD') %></td>
+      </tr>
+  </tbody>
+</table>

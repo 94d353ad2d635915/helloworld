@@ -12,16 +12,35 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :currency %>
-    <%= form.text_field :currency %>
+    <%= form.label :User %>
+    <% if credit.user_id %>
+      <%= credit.user.email %>
+    <% else %>
+      <%= form.number_field :user_id %>
+    <% end %>
   </div>
 
   <div class="field">
-    <%= form.label :balance %>
-    <%= form.number_field :balance %>
+    <%= form.label :POINT %>
+    <%= number_field_tag 'credit[POINT]', nil, min: 0 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :CNY %>
+    <%= number_field_tag 'credit[CNY]', nil, min: 0 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :BTC %>
+    <%= number_field_tag 'credit[BTC]', nil, min: 0 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :USD %>
+    <%= number_field_tag 'credit[USD]', nil, min: 0 %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit data: { confirm: 'Are you sure?' } %>
   </div>
 <% end %>

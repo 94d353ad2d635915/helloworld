@@ -9,11 +9,16 @@
   </thead>
 
   <tbody>
-    <% @credits.each do |credit| %>
+    <% 
+      currencies = CURRENCIES.keys
+      @credit.attributes.each do |k,v| 
+      if currencies.include?(currency = k.upcase) 
+        %>
       <tr>
-        <td><%= money_name(credit.currency) %></td>
-        <td><%= money(credit.balance, credit.currency) %></td>
+        <td><%= money_name(currency) %></td>
+        <td><%= money(v, currency) %></td>
       </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
@@ -32,12 +37,19 @@
   <tbody>
     <% @creditlogs.each do |creditlog| %>
       <tr>
+        <%
+          is_sender = current_user.id == creditlog.user_id
+          description = "#{event_find(creditlog.eventlog.event_id).description}:#{creditlog.eventlog.description}"
+          description = "user:#{creditlog.user_id}_#{description}" unless is_sender
+          amount = is_sender ? creditlog.amount : -creditlog.amount
+          balance = is_sender ? creditlog.balance : creditlog.receiver_balance
+        %>
         <td><%= creditlog.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td><%= creditlog.eventlog.ip %></td>
-        <td><%= "#{event_find(creditlog.eventlog.event_id).description}:#{creditlog.eventlog.description}" %></td>
+        <td><%= description %></td>
         <td><%= money_name(creditlog.currency) %></td>
-        <td><%= money(creditlog.amount, creditlog.currency) %></td>
-        <td><%= money(creditlog.balance, creditlog.currency) %></td>
+        <td><%= money(amount, creditlog.currency) %></td>
+        <td><%= money(balance, creditlog.currency) %></td>
       </tr>
     <% end %>
   </tbody>

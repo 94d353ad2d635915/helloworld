@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   namespace :console do
     resource :notifications, only: [:show, :destroy]
     resources :creditlogs, only: [:index, :show, :destroy]
-    resources :credits
+    resources :credits, param: :user_id, except: [:edit] do
+      member do
+        get 'charge'
+      end
+    end
     resources :eventlogs, only: [:index, :show, :destroy]
     resources :events
     resources :profiles

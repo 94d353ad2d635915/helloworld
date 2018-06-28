@@ -1,13 +1,13 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Credits</h1>
 
 <table>
   <thead>
     <tr>
       <th>User</th>
-      <th>Currency</th>
-      <th>Balance</th>
+      <th><%= money_name('POINT') %></th>
+      <th><%= money_name('CNY') %></th>
+      <th><%= money_name('BTC') %></th>
+      <th><%= money_name('USD') %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,16 +16,14 @@
     <% @credits.each do |credit| %>
       <tr>
         <td><%= credit.user.email %></td>
-        <td><%= money_name(credit.currency) %></td>
-        <td><%= money(credit.balance, credit.currency) %></td>
-        <td><%= link_to 'Show', console_credit_path(credit) %></td>
-        <td><%= link_to 'Edit', edit_console_credit_path(credit) %></td>
-        <td><%= link_to 'Destroy', console_credit_path(credit), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= money(credit.POINT, 'POINT') %></td>
+        <td><%= money(credit.CNY, 'CNY') %></td>
+        <td><%= money(credit.BTC, 'BTC') %></td>
+        <td><%= money(credit.USD, 'USD') %></td>
+        <td><%= link_to 'show', console_credit_path(credit) %></td>
+        <td><%= link_to 'charge', charge_console_credit_path(credit) %></td>
+        <td><%= link_to 'clear', console_credit_path(credit), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Credit', new_console_credit_path %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_21_094613) do
+ActiveRecord::Schema.define(version: 2018_06_27_145419) do
 
   create_table "assign_permissions_roles", force: :cascade do |t|
     t.integer "role_id"
@@ -46,21 +46,23 @@ ActiveRecord::Schema.define(version: 2018_06_21_094613) do
   create_table "creditlogs", force: :cascade do |t|
     t.integer "user_id"
     t.integer "eventlog_id"
-    t.string "currency"
+    t.integer "currency", default: 0, null: false
     t.integer "amount"
     t.integer "balance"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "receiver_id", default: 1
+    t.integer "receiver_balance", default: 0
     t.index ["eventlog_id"], name: "index_creditlogs_on_eventlog_id"
+    t.index ["user_id", "currency"], name: "index_creditlogs_on_user_id_and_currency"
     t.index ["user_id"], name: "index_creditlogs_on_user_id"
   end
 
   create_table "credits", force: :cascade do |t|
     t.integer "user_id"
-    t.string "currency", null: false
-    t.integer "balance", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "POINT", default: 0
+    t.integer "CNY", default: 0
+    t.integer "BTC", default: 0
+    t.integer "USD", default: 0
     t.index ["user_id"], name: "index_credits_on_user_id"
   end
 
@@ -80,7 +82,7 @@ ActiveRecord::Schema.define(version: 2018_06_21_094613) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "currency"
+    t.integer "currency", default: 0, null: false
     t.integer "amount", default: 0
     t.index ["permission_id"], name: "index_events_on_permission_id"
   end
@@ -123,6 +125,8 @@ ActiveRecord::Schema.define(version: 2018_06_21_094613) do
     t.string "third_notifiable_type"
     t.integer "third_notifiable_id"
     t.datetime "created_at"
+    t.index ["_type"], name: "index_notifications_on_type_id"
+    t.index ["sender_id"], name: "index_notifications_on_sender_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
@@ -170,7 +174,7 @@ ActiveRecord::Schema.define(version: 2018_06_21_094613) do
   end
 
   create_table "topics", force: :cascade do |t|
-    t.string "title"
+    t.string "title", limit: 120
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

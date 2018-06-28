@@ -19,13 +19,13 @@ class AppController < ActionController::Base
 
       @current_permission = root? ? route_permission : can?(@user_permissions)
       @current_event = @current_permission ? event_find_by(permission_id: @current_permission.id) : nil
-      if @current_event and @current_event.currency and @current_event.amount != 0
-        @current_credits = current_user.credits.select{|o| o.currency == @current_event.currency }.first
+      if !root? and @current_event and @current_event.currency and @current_event.amount != 0
+        @current_credits = current_user.credit
 
         # unless user_credit
         #   user_credit = current_user.credits.build(currency: event.currency, balance: 0)
         # end
-        if !@current_credits or ( @current_credits.balance + @current_event.amount ) < 0
+        if !@current_credits or ( @current_credits.send(@current_event.currency.upcase) + @current_event.amount ) < 0
           notice = "
             该操作需要消耗：#{@current_event.amount} #{@current_event.currency}，
             你没有足够的“#{@current_event.currency}”，请充值后进行该项操作。"
@@ -98,14 +98,22 @@ class AppController < ActionController::Base
 
     def creat_creditlog(event,eventlog=nil)
       if @current_credits
-        @current_credits.balance += event.amount
+        currency = @current_event.currency.upcase
+        @current_credits[currency.to_sym] += event.amount
+
+        receiver = User.find(1)
+        receiver_credit = receiver.credit
+        receiver_credit[currency.to_sym] -= event.amount
         @current_credits.save
+        receiver_credit.save
 
         creditlog = current_user.creditlogs.build
         creditlog.eventlog = eventlog
         creditlog.currency = event.currency
         creditlog.amount = event.amount
-        creditlog.balance = @current_credits.balance
+        creditlog.balance = @current_credits.send(currency)
+        creditlog.receiver_id = receiver.id
+        creditlog.receiver_balance = receiver_credit.send(currency)
         creditlog.save
       end
     end

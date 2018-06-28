@@ -1,0 +1,34 @@
+<h1>Editing Credit</h1>
+
+<p>
+  <strong>User:</strong>
+  <%= @credit.user.email %>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Currency</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% 
+      currencies = CURRENCIES.keys
+      @credit.attributes.each do |k,v| 
+      if currencies.include?(currency = k.upcase) 
+        %>
+      <tr>
+        <td><%= money_name(currency) %></td>
+        <td><%= money(v, currency) %></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render 'form', credit: @credit %>
+
+<%= link_to 'show', console_credit_path(@credit) %>
+<%= link_to 'Back', console_credits_path %>

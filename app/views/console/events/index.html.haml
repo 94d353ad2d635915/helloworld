@@ -23,7 +23,7 @@
           %td.filter-b= permission.controller
           %td.filter-c= "#{permission.action} [#{permission.verb}]"
           %td= form.text_field :description
-          %td= form.text_field :currency
+          %td= form.select :currency, CURRENCIES.map{|k,v| [v[:name], k]}
           %td= form.text_field :amount
           %td
             = form.button '保存'
