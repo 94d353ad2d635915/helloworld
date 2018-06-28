@@ -25,7 +25,7 @@
 
   <div class="field">
     <%= form.label :slug %>
-    <%= form.text_field :slug %>
+    <%= form.text_field :slug, required: true %>
   </div>
 
   <div class="field">
@@ -45,10 +45,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :posttext %>
-    <%= fields_for :posttext, node.posttext do |posttext| %>
-      <%= posttext.text_area :body %>
-    <% end %>
+    <%= form.label :body %>
+    <%= form.text_area :body %>
+  </div>
+
+  <div class="field">
+    <%= form.label :css %>
+    <%= form.text_area :css %>
   </div>
 
   <div class="actions">

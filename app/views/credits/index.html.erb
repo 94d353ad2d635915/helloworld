@@ -12,7 +12,7 @@
     <% 
       currencies = CURRENCIES.keys
       @credit.attributes.each do |k,v| 
-      if currencies.include?(currency = k.upcase) 
+      if currencies.include?(currency = k.upcase) and v > 0
         %>
       <tr>
         <td><%= money_name(currency) %></td>

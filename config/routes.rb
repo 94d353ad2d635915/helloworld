@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resource :settings, controller: 'profiles', only: [:show, :update]
 
   root 'topics#index'
-  resources :nodes, only: [:show]
+  resources :nodes, param: :slug, only: [:show]
   resources :topics, except: [:destroy] do 
     resources :comments, only: [:create]
   end
@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     resources :menus
     get 'permissions', to: 'permissions#index'
     patch 'permissions', to: 'permissions#update'
-    resources :nodes
+    resources :nodes, param: :slug
     resources :comments, except: [:new, :create]
     resources :topics do 
       # resources :comments

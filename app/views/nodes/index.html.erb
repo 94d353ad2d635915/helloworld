@@ -25,7 +25,7 @@
         <td><%= node.tagline %></td>
         <td><%= image_tag(node.avatar.url, size: 48) if node.avatar %></td>
         <td><%= node.user %></td>
-        <td><%= node.posttext.body if node.posttext %></td>
+        <td><%= node.body if node.body.presence %></td>
         <td><%= link_to 'Show', node %></td>
         <td><%= link_to 'Edit', edit_node_path(node) %></td>
         <td><%= link_to 'Destroy', node, method: :delete, data: { confirm: 'Are you sure?' } %></td>

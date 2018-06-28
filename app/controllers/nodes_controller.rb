@@ -4,7 +4,7 @@ class NodesController < ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = @Node_all.includes(:posttext, :node, :user)
+    @nodes = @Node_all.includes(:node, :user)
   end
 
   # GET /nodes/1
@@ -16,6 +16,6 @@ class NodesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_node
       # @node = Node.find(params[:id])
-      @node = node_find(params[:id])
+      @node = node_find_by(slug: params[:slug])
     end
 end

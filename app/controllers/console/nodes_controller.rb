@@ -1,13 +1,10 @@
 class  Console::NodesController <  Console::ApplicationController
   before_action :set_node, only: [:show, :edit, :update, :destroy]
-  after_action only: [:create, :update] do 
-    update_posttext(@node, posttext_params)
-  end
 
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all.includes(:posttext, :user)
+    @nodes = Node.all.includes(:user)
   end
 
   # GET /nodes/1
@@ -67,15 +64,11 @@ class  Console::NodesController <  Console::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_node
-      @node = node_find(params[:id])
+      @node = node_find_by(slug: params[:slug])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def node_params
-      params.require(:node).permit(:node_id, :name, :slug, :tagline, :avatar)
-    end
-
-    def posttext_params
-      params.require(:posttext).permit(:body)
+      params.require(:node).permit(:node_id, :name, :slug, :tagline, :avatar, :body)
     end
 end
