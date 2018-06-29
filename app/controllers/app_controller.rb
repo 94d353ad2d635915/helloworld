@@ -142,16 +142,16 @@ class AppController < ActionController::Base
       @Node_all ||= _caches(Node, 'all')
 
       # Rails.cache.delete "articles"
-      @Role_all    ||= _caches(Role, 'all')
-      @user_role    ||= role_find_by(name: 'user')
-      @public_role  ||= role_find_by(name: 'public')
+      @Role_all ||= _caches(Role, 'all')
+      @user_role ||= role_find_by(name: 'user')
+      @public_role ||= role_find_by(name: 'public')
 
-      @Permission_all    ||= _caches(Permission, 'all')
-      @user_permissions   ||= _caches(@user_role, "permissions")
+      @Permission_all ||= _caches(Permission, 'all')
+      @user_permissions ||= _caches(@user_role, "permissions")
       @public_permissions ||= _caches(@public_role, "permissions")
       # @@assign_permissions_roles = 
       # @@assign_roles_users =
-      @Menu_all  ||= _caches(Menu, 'all')
+      @Menu_all ||= _caches(Menu, 'all')
       @Event_all ||= _caches(Event, 'all')
     end
 
@@ -201,6 +201,14 @@ class AppController < ActionController::Base
     # @role_all.select{|o| o.name == role_name}.first
     # @role_all.includes(:user)
     # node/permission/role/menu/event
+    def option_find(option_id)
+      option_find_by(id: option_id)
+    end
+
+    def option_find_by(*options)
+      object_find_by_uniq('option', *options)
+    end
+
     def node_find(node_id)
       node_find_by(id: node_id)
     end

@@ -82,7 +82,7 @@ class Console::RolesController < Console::ApplicationController
     #   permission_id: _delete, 
     #   role_id: tree_child_ids(@Role_all, @role.id)
     # }).destroy_all#.map(&:destroy)
-    role_child_ids = tree_child_ids(@roles, @role.id)
+    role_child_ids = tree_child_ids(@Role_all, @role.id)
     @apr.each do |o|
       o.destroy if _delete.include?(o.permission_id) && role_child_ids.include?(o.role_id)
     end

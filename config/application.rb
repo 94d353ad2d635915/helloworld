@@ -36,10 +36,3 @@ module LinanApp
     config.time_zone = 'Beijing'
   end
 end
-
-CURRENCIES = {
-  'USD' => {symbol: '$', name: '美元'},
-  'CNY' => {symbol: '¥', name: '人民币'},
-  'POINT' => {symbol: '', name: '积分'},
-  'BTC' => {symbol: '₿', name: '比特币'},
-}

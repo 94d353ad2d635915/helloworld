@@ -36,5 +36,7 @@ Rails.application.routes.draw do
       post 'comments', to: 'comments#create_from_topic'#, as: 'comments'
       delete 'comments/:id', to: 'comments#destroy_from_topic', as: 'comment'
     end
+    resources :options
+    delete :options, to: 'options#reset'
   end
 end

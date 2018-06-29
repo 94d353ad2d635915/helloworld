@@ -15,7 +15,7 @@
 
   <tbody>
     <% 
-      currencies = CURRENCIES.keys
+      currencies = instance_eval(OPTIONS['CURRENCIES']).keys
       @credit.attributes.each do |k,v| 
       if currencies.include?(currency = k.upcase) 
         %>

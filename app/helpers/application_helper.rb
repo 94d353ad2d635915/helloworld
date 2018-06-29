@@ -49,19 +49,19 @@ module ApplicationHelper
     if route.presence
       name ||= route[:path]
       if methods.include?(route[:verb]) and !route[:path].include?(':') and route[:alias]
-        return link_to(raw(name), route[:alias].to_sym, method: route[:verb].to_sym)
+        return link_to(raw(name), route[:alias].to_sym)
       end
     end
     name
   end
 
   def money(credit, currency)
-    currency = CURRENCIES[currency.upcase]
+    currency = instance_eval(OPTIONS['CURRENCIES'])[currency.upcase]
     currency ||= {symbol: ''}
     "#{currency[:symbol]} #{number_with_delimiter((credit*0.01).round(2))}"
   end
 
   def money_name(currency)
-    CURRENCIES[currency.upcase][:name]
+    instance_eval(OPTIONS['CURRENCIES'])[currency.upcase][:name]
   end
 end

@@ -1,0 +1,35 @@
+<h1>
+Options
+(<%= link_to 'Reset', console_options_path, method: :delete, data: { confirm: 'Are you sure?' } %>)
+数据格式不正确，将会导致服务器死亡。
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+      <th>Description</th>
+      <th>Autoload</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @options.each do |option| %>
+      <tr>
+        <td><%= option.name %></td>
+        <td><%= option.value %></td>
+        <td><%= option.description %></td>
+        <td><%= option.autoload %></td>
+        <td><%= link_to 'Show', console_option_path(option) %></td>
+        <td><%= link_to 'Edit', edit_console_option_path(option) %></td>
+        <td><%= link_to 'Destroy', console_option_path(option), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Option', new_console_option_path %>

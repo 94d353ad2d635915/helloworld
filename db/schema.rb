@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_28_143137) do
+ActiveRecord::Schema.define(version: 2018_06_28_151703) do
 
   create_table "assign_permissions_roles", force: :cascade do |t|
     t.integer "role_id"
@@ -130,6 +130,13 @@ ActiveRecord::Schema.define(version: 2018_06_28_143137) do
     t.index ["_type"], name: "index_notifications_on_type_id"
     t.index ["sender_id"], name: "index_notifications_on_sender_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.text "value", null: false
+    t.string "description", default: "", null: false
+    t.integer "autoload", default: 1, null: false
   end
 
   create_table "permissions", force: :cascade do |t|

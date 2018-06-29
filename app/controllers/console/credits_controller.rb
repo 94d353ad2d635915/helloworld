@@ -56,7 +56,7 @@ class  Console::CreditsController <  Console::ApplicationController
   # DELETE /credits/1
   # DELETE /credits/1.json
   def destroy
-    currencies = CURRENCIES.keys
+    currencies = instance_eval(OPTIONS['CURRENCIES']).keys
     @credit.attributes.each{|k,v| @credit[k] = 0 if currencies.include? k }
     @credit.save
     # @credit.destroy

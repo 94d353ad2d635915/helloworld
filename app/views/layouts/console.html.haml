@@ -19,7 +19,7 @@
         %ul.nav.justify-content-end
           //- if !mobile?
           - if user_signed_in?
-            %li.nav-item= link_to "登出", destroy_user_session_path, method: :delete, class: "nav-link"
+            %li.nav-item= link_to "登出", destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } , class: "nav-link"
           - else
             %li.nav-item= link_to "注册", new_user_registration_path, class: "nav-link"
             %li.nav-item= link_to "登录", new_user_session_path, class: "nav-link"
